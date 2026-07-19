@@ -1,26 +1,243 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-heading: var(--font-bebas-neue);
+  --font-body: var(--font-inter);
+  
+  --color-accent: #FFD100;
+  --color-accent-dark: #C7A400;
+  --color-primary: #000000;
+  --color-secondary: #0F0F0F;
+  --color-neutral-dark: #121212;
+  --color-glass: rgba(255, 255, 255, 0.08);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-gold-glow: rgba(255, 209, 0, 0.15);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom Scrollbar for Luxury Dark Theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border-radius: 4px;
+  border: 2px solid #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFD100;
+}
+
+/* Lenis Smooth Scroll Configuration */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Base styles */
+body {
+  overflow-x: hidden;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Custom Cursor active styles */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  
+  a, button, [role="button"], input, select, textarea {
+    cursor: none !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(15, 15, 15, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+.glass-nav {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Utility Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 209, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 209, 0, 0.5);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Custom cinematic effects */
+.cinematic-glow {
+  text-shadow: 0 0 10px rgba(255, 209, 0, 0.3), 0 0 20px rgba(255, 209, 0, 0.1);
+}
+
+.title-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.title-word-inner {
+  display: inline-block;
+  transform: translateY(100%);
+  filter: blur(8px);
+  opacity: 0;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1s ease, opacity 1s ease;
+}
+
+.title-word-inner.revealed {
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+}
+
+/* Border animation for secondary CTA */
+.border-animate-container {
+  position: relative;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.border-animate-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    transparent 40%,
+    #FFD100 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  animation: borderRotate 4s linear infinite;
+  z-index: 0;
+}
+
+.border-animate-inner {
+  position: relative;
+  z-index: 10;
+  margin: 1px;
+  background: #000000;
+  border-radius: 9999px;
+}
+
+@keyframes borderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Primary Button Liquid Ripple & Magnetic Glow */
+.btn-liquid {
+  position: relative;
+  overflow: hidden;
+  background: #FFD100;
+  color: #000000;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.btn-liquid::after {
+  content: '';
+  position: absolute;
+  top: var(--y, 50%);
+  left: var(--x, 50%);
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease-out, height 0.6s ease-out;
+}
+
+.btn-liquid:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-liquid:hover {
+  box-shadow: 0 0 25px rgba(255, 209, 0, 0.6);
+}
+
+/* Subtle Volumetric Overlay */
+.volumetric-fog-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0, 0, 0, 0.95) 100%);
+  z-index: 15;
+}
+
+/* Interactive Overlay for Enter Button */
+.enter-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.5s;
+}
+
+.enter-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Floating UI Dust Particles Layer */
+.floating-dust-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 12;
+  mix-blend-mode: screen;
+  opacity: 0.15;
+}
+
+

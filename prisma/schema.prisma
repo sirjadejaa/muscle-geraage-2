@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Lead {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  email     String
+  program   String
+  message   String
+  status    String   @default("PENDING") // PENDING, CONTACTED, ARCHIVED
+  createdAt DateTime @default(now())
+}
+
+model Trainer {
+  id             String   @id @default(uuid())
+  name           String
+  role           String   // e.g. "Head Coach"
+  experience     String   // e.g. "8+ Years"
+  specialization String   // e.g. "Elite Bodybuilding & Strength"
+  certificates   String   // e.g. "K11 Certified, Gold's Gym Academy" (comma separated)
+  image          String   // Local image path or remote URL
+  instagram      String?
+  twitter        String?
+  createdAt      DateTime @default(now())
+}
+
+model Program {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  overview    String
+  benefits    String   // comma separated list
+  schedule    String   // e.g. "Mon - Sat: 06:00 AM - 10:00 PM"
+  image       String   // Local path or URL
+  createdAt   DateTime @default(now())
+}
+
+model MembershipPlan {
+  id        String   @id @default(uuid())
+  name      String   // e.g. "Annual Elite", "VIP Personal"
+  price     String   // e.g. "₹25,000", "₹12,000"
+  duration  String   // e.g. "Per Year", "Per Quarter"
+  features  String   // comma separated list
+  popular   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model GalleryItem {
+  id        String   @id @default(uuid())
+  url       String
+  category  String   // Strength, Cardio, CrossFit, Pool, Recovery
+  createdAt DateTime @default(now())
+}
+
+model BlogPost {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  category  String   // Nutrition, Workout, Lifestyle, Recovery
+  content   String   // Markdown or rich text content
+  excerpt   String
+  readTime  String   // e.g. "5 Min Read"
+  author    String   // e.g. "Coach Dev"
+  image     String   // Local path or URL
+  createdAt DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String   // e.g. "Business Executive", "Professional Athlete"
+  content   String
+  rating    Int      @default(5)
+  videoUrl  String?  // Optional video review URL
+  image     String   // Profile picture URL
+  createdAt DateTime @default(now())
+}
+
+model FAQ {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+}
