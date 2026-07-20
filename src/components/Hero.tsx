@@ -1366,7 +1366,7 @@ export default function Hero() {
           {/* Secondary: WATCH CINEMATIC TOUR (Glass Conic Border) */}
           <Link
             href="#virtual-tour"
-            className="border-animate-container group inline-flex items-center"
+            className="border-animate-container group inline-flex items-center cursor-play"
           >
             <div className="border-animate-inner px-8 py-4.5 flex items-center gap-3 text-white group-hover:text-black group-hover:bg-accent transition-all duration-300 uppercase font-heading text-lg tracking-[0.2em]">
               <span className="flex items-center justify-center w-7 h-7 rounded-full border border-white/20 bg-white/5 group-hover:border-black group-hover:bg-black group-hover:text-accent transition-all">

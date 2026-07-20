@@ -106,7 +106,7 @@ export default function VirtualTour() {
         </div>
 
         {/* Custom Video Player Container */}
-        <div className="tour-player-container relative max-w-5xl mx-auto aspect-video bg-neutral-dark border border-white/10 overflow-hidden group">
+        <div className="tour-player-container relative max-w-5xl mx-auto aspect-video bg-neutral-dark border border-white/10 overflow-hidden group cursor-play">
           {/* Loop Video as Poster Background */}
           <video
             ref={videoRef}

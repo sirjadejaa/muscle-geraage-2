@@ -36,15 +36,17 @@ export default function BrandStory() {
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="relative bg-black z-30">
+    <div ref={containerRef} className="relative bg-black z-30 overflow-hidden">
       {/* Scrollable Container */}
       <div
         ref={scrollSectionRef}
-        className="flex h-screen w-[300vw] overflow-x-hidden"
+        className="flex h-screen w-[300vw] overflow-x-hidden cursor-drag"
       >
         {/* Panel 1: The Sanctuary */}
-        <section className="brand-panel w-screen h-screen flex-shrink-0 flex flex-col justify-center px-8 md:px-24 bg-gradient-to-r from-black to-neutral-dark border-r border-white/5">
-          <div className="max-w-4xl">
+        <section className="brand-panel w-screen h-screen flex-shrink-0 flex flex-col justify-center px-8 md:px-24 bg-gradient-to-r from-black to-neutral-dark border-r border-white/5 relative">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920')] bg-cover bg-center opacity-15 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none" />
+          <div className="max-w-4xl relative z-10">
             <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-4 block">
               01 // THE ORIGIN
             </span>
@@ -60,7 +62,8 @@ export default function BrandStory() {
 
         {/* Panel 2: The Equipment */}
         <section className="brand-panel w-screen h-screen flex-shrink-0 flex flex-col justify-center px-8 md:px-24 bg-neutral-dark border-r border-white/5 relative">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1920')] bg-cover bg-center opacity-10 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1920')] bg-cover bg-center opacity-15 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent pointer-events-none" />
           <div className="max-w-4xl relative z-10">
             <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-4 block">
               02 // THE WEAPONRY
@@ -78,8 +81,10 @@ export default function BrandStory() {
         </section>
 
         {/* Panel 3: The Community */}
-        <section className="brand-panel w-screen h-screen flex-shrink-0 flex flex-col justify-center px-8 md:px-24 bg-black">
-          <div className="max-w-4xl">
+        <section className="brand-panel w-screen h-screen flex-shrink-0 flex flex-col justify-center px-8 md:px-24 bg-black relative">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1920')] bg-cover bg-center opacity-15 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none" />
+          <div className="max-w-4xl relative z-10">
             <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-4 block">
               03 // THE MISSION
             </span>

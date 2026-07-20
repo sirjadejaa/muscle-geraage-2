@@ -113,7 +113,7 @@ export default function Gallery() {
             <div
               key={item.id}
               onClick={() => openLightbox(item.id)}
-              className="gallery-item-wrap break-inside-avoid relative overflow-hidden border border-white/5 bg-secondary group cursor-none"
+              className="gallery-item-wrap break-inside-avoid relative overflow-hidden border border-white/5 bg-secondary group cursor-view cursor-none"
             >
               <img
                 src={item.url}

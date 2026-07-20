@@ -6,6 +6,7 @@ export default function CustomCursor() {
   const [hidden, setHidden] = useState(true);
   const [hovered, setHovered] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
+  const [cursorText, setCursorText] = useState('');
   
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
@@ -29,19 +30,32 @@ export default function CustomCursor() {
 
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
+      
+      const isInteractive = 
         target.tagName === 'A' || 
         target.tagName === 'BUTTON' || 
-        target.closest('a') || 
-        target.closest('button') ||
-        target.closest('[role="button"]') ||
+        !!target.closest('a') || 
+        !!target.closest('button') ||
+        !!target.closest('[role="button"]') ||
         target.tagName === 'INPUT' ||
         target.tagName === 'TEXTAREA' ||
-        target.tagName === 'SELECT'
-      ) {
-        setHovered(true);
+        target.tagName === 'SELECT';
+        
+      setHovered(isInteractive);
+
+      // Check for specific labels
+      const dragEl = target.closest('.cursor-drag');
+      const playEl = target.closest('.cursor-play');
+      const viewEl = target.closest('.cursor-view');
+
+      if (dragEl) {
+        setCursorText('DRAG');
+      } else if (playEl) {
+        setCursorText('PLAY');
+      } else if (viewEl) {
+        setCursorText('VIEW');
       } else {
-        setHovered(false);
+        setCursorText('');
       }
     };
 
@@ -90,28 +104,37 @@ export default function CustomCursor() {
 
   if (hidden) return null;
 
+  const isExpanded = hovered || cursorText !== '';
+
   return (
     <>
       {/* Inner Dot */}
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 w-2.5 h-2.5 bg-accent rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out"
+        className="fixed top-0 left-0 w-2 h-2 bg-accent rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out"
         style={{
           transform: 'translate3d(-100px, -100px, 0)',
-          scale: isClicking ? 0.8 : hovered ? 1.5 : 1,
+          scale: isClicking ? 0.7 : isExpanded ? 0 : 1,
         }}
       />
       {/* Outer Ring */}
       <div
         ref={cursorRingRef}
-        className="fixed top-0 left-0 w-9 h-9 border border-accent rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out"
+        className="fixed top-0 left-0 w-9 h-9 border rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition-all duration-300 ease-out"
         style={{
           transform: 'translate3d(-100px, -100px, 0)',
-          scale: isClicking ? 1.25 : hovered ? 1.8 : 1,
-          backgroundColor: hovered ? 'rgba(255, 209, 0, 0.12)' : 'transparent',
-          borderColor: hovered ? '#FFD100' : 'rgba(255, 209, 0, 0.6)',
+          scale: isClicking ? 1.15 : isExpanded ? 1.9 : 1,
+          backgroundColor: isExpanded ? 'rgba(255, 209, 0, 0.15)' : 'transparent',
+          borderColor: isExpanded ? '#FFD100' : 'rgba(255, 209, 0, 0.5)',
+          borderWidth: isExpanded ? '1px' : '1.5px',
         }}
-      />
+      >
+        {cursorText && (
+          <span className="text-[8px] font-heading font-black text-black tracking-widest select-none">
+            {cursorText}
+          </span>
+        )}
+      </div>
     </>
   );
 }
