@@ -102,7 +102,7 @@ export default function Programs() {
     <section
       ref={containerRef}
       id="programs"
-      className="relative bg-secondary py-24 md:py-32 px-6 border-t border-white/5 z-30"
+      className="relative bg-secondary pt-24 md:pt-32 pb-12 md:pb-16 px-6 border-t border-white/5 z-30"
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -126,7 +126,7 @@ export default function Programs() {
           {programs.map((prog, idx) => (
             <div
               key={idx}
-              className="program-card group relative aspect-[3/4] overflow-hidden border border-white/5 bg-black cursor-none"
+              className="program-card group relative aspect-[3/4] overflow-hidden border border-white/5 bg-black cursor-view cursor-none"
               onMouseEnter={() => setActiveIdx(idx)}
               onMouseLeave={() => setActiveIdx(null)}
             >

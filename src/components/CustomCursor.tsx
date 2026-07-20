@@ -47,6 +47,7 @@ export default function CustomCursor() {
       const dragEl = target.closest('.cursor-drag');
       const playEl = target.closest('.cursor-play');
       const viewEl = target.closest('.cursor-view');
+      const joinEl = target.closest('.cursor-join');
 
       if (dragEl) {
         setCursorText('DRAG');
@@ -54,6 +55,8 @@ export default function CustomCursor() {
         setCursorText('PLAY');
       } else if (viewEl) {
         setCursorText('VIEW');
+      } else if (joinEl) {
+        setCursorText('JOIN');
       } else {
         setCursorText('');
       }

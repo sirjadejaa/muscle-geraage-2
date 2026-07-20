@@ -123,7 +123,7 @@ export default function Membership() {
     <section
       ref={containerRef}
       id="membership"
-      className="relative bg-black py-24 md:py-32 px-6 z-30"
+      className="relative bg-black pt-12 md:pt-16 pb-24 md:pb-32 px-6 z-30"
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -145,7 +145,7 @@ export default function Membership() {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`plan-card relative flex flex-col justify-between p-8 md:p-10 bg-secondary border transition-all duration-500 hover:scale-[1.02] cursor-none ${
+              className={`plan-card relative flex flex-col justify-between p-8 md:p-10 bg-secondary border transition-all duration-500 hover:scale-[1.02] cursor-join cursor-none ${
                 plan.popular ? 'border-accent/80' : 'border-white/5'
               }`}
             >
