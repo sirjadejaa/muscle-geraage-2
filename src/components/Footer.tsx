@@ -34,8 +34,8 @@ export default function Footer() {
             <span className="font-heading text-2xl tracking-wider text-white">
               MUSCLE <span className="text-accent">GARAAGE</span>
             </span>
-            <p className="font-body text-xs text-gray-400 leading-relaxed max-w-sm">
-              Motera's premier luxury fitness club. Engineered to provide the finest biomechanical equipment, CrossFit box, heated pool, and bespoke sports recovery services.
+            <p className="font-body text-sm text-gray-400 max-w-sm leading-relaxed mb-6">
+              Motera&apos;s premier luxury fitness club. Engineered to provide the finest biomechanical equipment, CrossFit box, heated pool, and bespoke sports recovery services.
             </p>
             
             {/* Google Reviews rating card */}

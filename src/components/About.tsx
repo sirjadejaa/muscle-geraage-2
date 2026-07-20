@@ -77,7 +77,7 @@ export default function About() {
             <span className="text-accent">LIMITS OF FITNESS</span>
           </h2>
           <p className="font-body text-base text-gray-300 mb-6 leading-relaxed">
-            Muscle Garaage is Ahmedabad's premier luxury fitness club. Born from the belief that fitness should be an immersive, high-end experience, we combine cutting-edge biomechanical technology with upscale hospitality.
+            Muscle Garaage is Ahmedabad&apos;s premier luxury fitness club. Born from the belief that fitness should be an immersive, high-end experience, we combine cutting-edge biomechanical technology with upscale hospitality.
           </p>
           <p className="font-body text-base text-gray-400 mb-8 leading-relaxed">
             Spanning a massive 35,000 square feet, our facility in Motera features dedicated strength arenas, specialized CrossFit rigs, a crystal-clear indoor pool, steam and sauna cabins, and dynamic training zones. This is not just a gym; it is a lifestyle statement for those who value performance.

@@ -220,7 +220,7 @@ export default function Transformations() {
                   “
                 </span>
                 <p className="font-body text-sm text-gray-300 italic leading-relaxed mb-6">
-                  "{activeStory.quote}"
+                  &quot;{activeStory.quote}&quot;
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-1.5 h-1.5 bg-accent rounded-full" />

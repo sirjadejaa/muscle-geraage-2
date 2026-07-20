@@ -84,7 +84,7 @@ export default function BrandStory() {
               03 // THE MISSION
             </span>
             <h2 className="font-heading text-6xl sm:text-8xl md:text-9xl uppercase tracking-tight text-white mb-6 leading-none">
-              AHMEDABAD'S <br />
+              AHMEDABAD&apos;S <br />
               <span className="text-accent">NEW ELITE</span>
             </h2>
             <p className="font-body text-base md:text-xl text-gray-400 max-w-2xl leading-relaxed">

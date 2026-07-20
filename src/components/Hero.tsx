@@ -38,7 +38,7 @@ export default function Hero() {
   const breathingSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const breathingGainRef = useRef<GainNode | null>(null);
   const breathingFilterRef = useRef<BiquadFilterNode | null>(null);
-  const breathingTimerRef = useRef<any>(null);
+  const breathingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMutedRef = useRef(false);
 
   // Mouse movement variables for parallax
@@ -52,6 +52,7 @@ export default function Hero() {
   const dumbbellRef = useRef<THREE.Group | null>(null);
   const particlesRef = useRef<THREE.Points | null>(null);
   const spotLightRef = useRef<THREE.SpotLight | null>(null);
+  const isMobileRef = useRef(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   // Show "Enter" button after 0.8s (creative direction)
   useEffect(() => {
@@ -207,7 +208,7 @@ export default function Hero() {
 
   const handleEnter = () => {
     // 1. Initialize Audio Context
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (AudioContextClass) {
       const ctx = new AudioContextClass();
       audioCtxRef.current = ctx;
@@ -272,15 +273,16 @@ export default function Hero() {
     sceneRef.current = scene;
     scene.fog = new THREE.FogExp2(0x000000, 0.035);
 
+    const aspect = window.innerWidth / window.innerHeight;
     const camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
+      isMobileRef.current ? 60 : 45,
+      aspect,
       0.1,
       100
     );
     cameraRef.current = camera;
     // Initial camera position extremely close to dumbbell
-    camera.position.set(0, 0.15, 1.4);
+    camera.position.set(0, 0.15, isMobileRef.current ? 1.8 : 1.4);
     camera.lookAt(0, 0.05, 0);
 
     const renderer = new THREE.WebGLRenderer({
@@ -683,14 +685,16 @@ export default function Hero() {
     // 9. Resize Listener
     const handleResize = () => {
       if (!cameraRef.current || !rendererRef.current) return;
+      isMobileRef.current = window.innerWidth < 768;
       cameraRef.current.aspect = window.innerWidth / window.innerHeight;
+      cameraRef.current.fov = isMobileRef.current ? 60 : 45;
       cameraRef.current.updateProjectionMatrix();
       rendererRef.current.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
 
     // 10. Animation Render Loop
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
     let animationFrameId: number;
 
     const tick = () => {
@@ -799,7 +803,8 @@ export default function Hero() {
           // 1. First Phase (0 to 0.15): Close dumbbell rotation orbit
           if (p <= 0.15) {
             const ratio = p / 0.15;
-            cameraRef.current.position.z = 1.4 + ratio * 0.4;
+            const baseZ = isMobileRef.current ? 1.8 : 1.4;
+            cameraRef.current.position.z = baseZ + ratio * 0.4;
             cameraRef.current.position.y = 0.15 + ratio * 0.15;
             cameraRef.current.lookAt(0, 0.05, 0);
             
@@ -812,8 +817,9 @@ export default function Hero() {
           // 2. Second Phase (0.15 to 0.75): Glide back through the gym path
           else if (p > 0.15 && p <= 0.75) {
             const ratio = (p - 0.15) / 0.60;
-            // fly back from Z = 1.8 to Z = -34
-            cameraRef.current.position.z = 1.8 - ratio * 35.8;
+            const startZ = isMobileRef.current ? 2.2 : 1.8;
+            // fly back from startZ to Z = -34
+            cameraRef.current.position.z = startZ - ratio * (34 + startZ);
             cameraRef.current.position.y = 0.3 + ratio * 0.9;
             cameraRef.current.lookAt(0, 0.7 - ratio * 0.3, -37.8);
 
@@ -987,7 +993,7 @@ export default function Hero() {
               MUSCLE GARAAGE
             </h2>
             <p className="font-body text-gray-500 text-xs sm:text-sm tracking-widest max-w-sm uppercase mb-6">
-              Ahmedabad's Elite Luxury Fitness Sanctuary
+              Ahmedabad&apos;s Elite Luxury Fitness Sanctuary
             </p>
             <button
               onClick={handleEnter}
@@ -1028,7 +1034,7 @@ export default function Hero() {
         {/* Subtitle */}
         <div ref={subtitleRef} className="max-w-[600px] opacity-0 translate-y-12 select-none mb-10">
           <p className="font-body text-xs sm:text-sm md:text-base text-gray-300 tracking-wide leading-relaxed">
-            Ahmedabad's finest 35,000 sq ft luxury fitness club in Motera. 
+            Ahmedabad&apos;s finest 35,000 sq ft luxury fitness club in Motera. 
             Step into an elite training experience engineered with world-class biomechanical equipment, 
             indoor pool, steam rooms, and expert transformational blueprints.
           </p>

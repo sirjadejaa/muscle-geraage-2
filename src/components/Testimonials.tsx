@@ -143,7 +143,7 @@ export default function Testimonials() {
 
                   {/* Quote */}
                   <p className="font-body text-sm text-gray-300 leading-relaxed mb-8 italic">
-                    "{rev.quote}"
+                    &quot;{rev.quote}&quot;
                   </p>
                 </div>
 
