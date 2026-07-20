@@ -45,6 +45,9 @@ export default function Hero() {
   const mousePos = useRef({ x: 0, y: 0 });
   const targetMousePos = useRef({ x: 0, y: 0 });
 
+  // Track scroll progress for rendering updates
+  const scrollProgressRef = useRef(0);
+
   // WebGL references for clean resize/cleanup
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -268,6 +271,15 @@ export default function Hero() {
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    // Declare variables for animation references
+    let benchBarbell: THREE.Group;
+    let leftArmLine: THREE.Line;
+    let rightArmLine: THREE.Line;
+    let squatAthlete: THREE.Group;
+    let ringsGroup: THREE.Group;
+    let waterPlane: THREE.Mesh;
+    let swimmer: THREE.Group;
+
     // Create scene, camera, renderer
     const scene = new THREE.Scene();
     sceneRef.current = scene;
@@ -431,8 +443,245 @@ export default function Hero() {
     dumbbell.position.set(0, 0.05, 0);
     scene.add(dumbbell);
 
+    const wireframeGoldMat = new THREE.MeshBasicMaterial({
+      color: 0xFFD100,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.6,
+    });
+
+    // --- 1. BENCH PRESS STATION (Z = -8, X = 3) ---
+    const benchGroup = new THREE.Group();
+    benchGroup.position.set(3.0, -1.2, -8);
+    
+    // Bench flat pad
+    const benchPad = new THREE.Mesh(
+      new THREE.BoxGeometry(0.5, 0.08, 1.4),
+      new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 })
+    );
+    benchPad.position.y = 0.45;
+    benchGroup.add(benchPad);
+
+    // Bench legs
+    const legGeo = new THREE.BoxGeometry(0.06, 0.4, 0.06);
+    const legMat = new THREE.MeshStandardMaterial({ color: 0x2b2b2b, metalness: 0.8 });
+    const bLeg1 = new THREE.Mesh(legGeo, legMat);
+    bLeg1.position.set(-0.2, 0.2, -0.5);
+    const bLeg2 = bLeg1.clone();
+    bLeg2.position.set(0.2, 0.2, -0.5);
+    const bLeg3 = bLeg1.clone();
+    bLeg3.position.set(-0.2, 0.2, 0.5);
+    const bLeg4 = bLeg1.clone();
+    bLeg4.position.set(0.2, 0.2, 0.5);
+    benchGroup.add(bLeg1, bLeg2, bLeg3, bLeg4);
+
+    // Rack uprights
+    const uprightGeo = new THREE.BoxGeometry(0.06, 1.1, 0.06);
+    const uprightMat = new THREE.MeshStandardMaterial({ color: 0x1f1f1f, metalness: 0.9 });
+    const bUprightL = new THREE.Mesh(uprightGeo, uprightMat);
+    bUprightL.position.set(-0.3, 0.55, 0);
+    const bUprightR = bUprightL.clone();
+    bUprightR.position.set(0.3, 0.55, 0);
+    benchGroup.add(bUprightL, bUprightR);
+
+    // Golden wireframe athlete
+    const bpTorso = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.2, 0.8), wireframeGoldMat);
+    bpTorso.position.set(0, 0.55, 0);
+    benchGroup.add(bpTorso);
+
+    const bpHead = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 10), wireframeGoldMat);
+    bpHead.position.set(0, 0.6, 0.5);
+    benchGroup.add(bpHead);
+
+    // Barbell
+    benchBarbell = new THREE.Group();
+    const benchBar = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.5), chromeMat);
+    benchBar.geometry.rotateZ(Math.PI / 2);
+    benchBarbell.add(benchBar);
+
+    const bpPl1 = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.04, 20), plateMat);
+    bpPl1.geometry.rotateZ(Math.PI / 2);
+    bpPl1.position.x = -0.7;
+    const bpPl2 = bpPl1.clone();
+    bpPl2.position.x = 0.7;
+    benchBarbell.add(bpPl1, bpPl2);
+    benchBarbell.position.set(0, 0.9, 0);
+    benchGroup.add(benchBarbell);
+
+    // Arm connection lines
+    leftArmLine = new THREE.Line(
+      new THREE.BufferGeometry(),
+      new THREE.LineBasicMaterial({ color: 0xFFD100 })
+    );
+    rightArmLine = new THREE.Line(
+      new THREE.BufferGeometry(),
+      new THREE.LineBasicMaterial({ color: 0xFFD100 })
+    );
+    benchGroup.add(leftArmLine, rightArmLine);
+
+    // --- 2. SQUAT / RACK STATION (Z = -16, X = -3) ---
+    const squatGroup = new THREE.Group();
+    squatGroup.position.set(-3.0, -1.2, -16);
+
+    const squatPostMat = new THREE.MeshStandardMaterial({ color: 0x1f1f1f, metalness: 0.85 });
+    const sqPostL = new THREE.Mesh(new THREE.BoxGeometry(0.06, 2.2, 0.06), squatPostMat);
+    sqPostL.position.set(-0.5, 1.1, 0);
+    const sqPostR = sqPostL.clone();
+    sqPostR.position.set(0.5, 1.1, 0);
+    squatGroup.add(sqPostL, sqPostR);
+
+    // Squatting Athlete (Torso and Legs)
+    squatAthlete = new THREE.Group();
+    squatAthlete.position.set(0, 0.8, 0);
+
+    const sqTorso = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.5, 0.18), wireframeGoldMat);
+    sqTorso.position.y = 0.25;
+    squatAthlete.add(sqTorso);
+
+    const sqHead = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 10), wireframeGoldMat);
+    sqHead.position.set(0, 0.6, 0);
+    squatAthlete.add(sqHead);
+
+    const sqBarbell = new THREE.Group();
+    const sqBar = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.6), chromeMat);
+    sqBar.geometry.rotateZ(Math.PI / 2);
+    sqBarbell.add(sqBar);
+
+    const sqPl1 = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.05, 20), plateMat);
+    sqPl1.geometry.rotateZ(Math.PI / 2);
+    sqPl1.position.x = -0.75;
+    const sqPl2 = sqPl1.clone();
+    sqPl2.position.x = 0.75;
+    sqBarbell.add(sqPl1, sqPl2);
+    sqBarbell.position.set(0, 0.48, 0); // on shoulders
+    squatAthlete.add(sqBarbell);
+
+    const sqLegL = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.5), wireframeGoldMat);
+    sqLegL.position.set(-0.1, -0.2, 0);
+    const sqLegR = sqLegL.clone();
+    sqLegR.position.set(0.1, -0.2, 0);
+    squatAthlete.add(sqLegL, sqLegR);
+    squatGroup.add(squatAthlete);
+
+    // --- 3. CROSSFIT platform (Z = -22, X = 3.5) ---
+    const crossFitGroup = new THREE.Group();
+    crossFitGroup.position.set(3.5, -1.2, -22);
+
+    const platBase = new THREE.Mesh(
+      new THREE.BoxGeometry(2.5, 0.04, 3.5),
+      new THREE.MeshStandardMaterial({ color: 0x1f1f1f, roughness: 0.8 })
+    );
+    platBase.position.y = 0.02;
+    crossFitGroup.add(platBase);
+
+    // Large tire
+    const tire = new THREE.Mesh(
+      new THREE.TorusGeometry(0.45, 0.18, 12, 24),
+      new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.98 })
+    );
+    tire.rotation.x = Math.PI / 2;
+    tire.position.set(-0.6, 0.18, 0.6);
+    crossFitGroup.add(tire);
+
+    // Kettlebell
+    const kbBase = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), new THREE.MeshStandardMaterial({ color: 0x1f1f1f, metalness: 0.8 }));
+    kbBase.position.set(0.5, 0.12, -0.6);
+    const kbHandle = new THREE.Mesh(new THREE.TorusGeometry(0.07, 0.015, 6, 12), new THREE.MeshStandardMaterial({ color: 0x1f1f1f, metalness: 0.8 }));
+    kbHandle.position.set(0.5, 0.22, -0.6);
+    crossFitGroup.add(kbBase, kbHandle);
+
+    // Rings sway setup
+    ringsGroup = new THREE.Group();
+    ringsGroup.position.set(0, 2.4, -0.5);
+
+    const ringL = new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.012, 8, 16), new THREE.MeshStandardMaterial({ color: 0x4f3f2f, roughness: 0.7 }));
+    ringL.position.set(-0.25, -0.8, 0);
+    const ringR = ringL.clone();
+    ringR.position.set(0.25, -0.8, 0);
+
+    const strapL = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.8), new THREE.MeshBasicMaterial({ color: 0x111111 }));
+    strapL.position.set(-0.25, -0.4, 0);
+    const strapR = strapL.clone();
+    strapR.position.set(0.25, -0.4, 0);
+    ringsGroup.add(ringL, ringR, strapL, strapR);
+    crossFitGroup.add(ringsGroup);
+
+    // Athlete on rings
+    const ringAthlete = new THREE.Group();
+    ringAthlete.position.set(0, -1.2, 0);
+
+    const raTorso = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.45, 0.12), wireframeGoldMat);
+    raTorso.position.y = -0.22;
+    ringAthlete.add(raTorso);
+
+    const raHead = new THREE.Mesh(new THREE.SphereGeometry(0.08, 10, 10), wireframeGoldMat);
+    raHead.position.set(0, 0.08, 0);
+    ringAthlete.add(raHead);
+
+    const raLegL = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.45), wireframeGoldMat);
+    raLegL.position.set(-0.06, -0.6, 0);
+    const raLegR = raLegL.clone();
+    raLegR.position.set(0.06, -0.6, 0);
+    ringAthlete.add(raLegL, raLegR);
+    ringsGroup.add(ringAthlete);
+
+    // --- 4. LUXURY GLASS INFINITY SWIMMING POOL (Z = -29, X = -6.5) ---
+    const poolGroup = new THREE.Group();
+    poolGroup.position.set(-6.5, -1.2, -29);
+
+    // Glass box walls
+    const poolGlass = new THREE.Mesh(
+      new THREE.BoxGeometry(4.6, 1.0, 7.6),
+      new THREE.MeshStandardMaterial({
+        color: 0x55ccff,
+        transparent: true,
+        opacity: 0.2,
+        roughness: 0.05,
+        metalness: 0.95,
+        side: THREE.DoubleSide
+      })
+    );
+    poolGlass.position.y = 0.5;
+    poolGroup.add(poolGlass);
+
+    // Water surface plane with vertices for ripple waves
+    const waterPlaneGeo = new THREE.PlaneGeometry(4.5, 7.5, 12, 12);
+    waterPlaneGeo.rotateX(-Math.PI / 2);
+    const waterMat = new THREE.MeshStandardMaterial({
+      color: 0x0066aa,
+      roughness: 0.1,
+      metalness: 0.85,
+      transparent: true,
+      opacity: 0.6,
+      flatShading: true,
+      side: THREE.DoubleSide
+    });
+    waterPlane = new THREE.Mesh(waterPlaneGeo, waterMat);
+    waterPlane.position.y = 0.88;
+    poolGroup.add(waterPlane);
+
+    // Under-water cyan light
+    const poolLight = new THREE.PointLight(0x00ffff, 12, 5);
+    poolLight.position.set(0, 0.3, 0);
+    poolGroup.add(poolLight);
+
+    // Swimmer figure
+    swimmer = new THREE.Group();
+    swimmer.position.set(0, 0.75, 0);
+
+    const swimmerBody = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.1, 0.6), wireframeGoldMat);
+    swimmer.add(swimmerBody);
+    const swimmerHead = new THREE.Mesh(new THREE.SphereGeometry(0.08, 10, 10), wireframeGoldMat);
+    swimmerHead.position.set(0, 0.04, 0.38);
+    swimmer.add(swimmerHead);
+    poolGroup.add(swimmer);
+
     // 4. Procedural Gym environment background
     const gymGroup = new THREE.Group();
+    gymGroup.add(benchGroup);
+    gymGroup.add(squatGroup);
+    gymGroup.add(crossFitGroup);
+    gymGroup.add(poolGroup);
 
     // Dark concrete floor
     const floorGeo = new THREE.PlaneGeometry(60, 100);
@@ -706,12 +955,61 @@ export default function Hero() {
         dumbbellRef.current.rotation.z = Math.cos(elapsedTime * 0.25) * 0.05;
       }
 
+      // 1. Bench Press animation (Z = -8)
+      if (benchBarbell) {
+        const bpCycle = Math.sin(elapsedTime * 2.2) * 0.2 + 0.88;
+        benchBarbell.position.y = bpCycle;
+
+        // Connect arm lines
+        const leftArmPoints = [
+          new THREE.Vector3(-0.12, 0.55, 0.15),
+          new THREE.Vector3(-0.35, bpCycle, 0)
+        ];
+        const rightArmPoints = [
+          new THREE.Vector3(0.12, 0.55, 0.15),
+          new THREE.Vector3(0.35, bpCycle, 0)
+        ];
+        leftArmLine.geometry.setFromPoints(leftArmPoints);
+        rightArmLine.geometry.setFromPoints(rightArmPoints);
+      }
+
+      // 2. Squat Athlete animation (Z = -16)
+      if (squatAthlete) {
+        const squatCycle = Math.sin(elapsedTime * 1.5) * 0.25 + 0.55;
+        squatAthlete.position.y = squatCycle;
+      }
+
+      // 3. CrossFit Rings sway (Z = -22)
+      if (ringsGroup) {
+        ringsGroup.rotation.z = Math.sin(elapsedTime * 1.2) * 0.08;
+        ringsGroup.rotation.x = Math.cos(elapsedTime * 0.9) * 0.04;
+      }
+
+      // 4. Swimming Pool waves & swimmer glide (Z = -29)
+      if (waterPlane) {
+        const pos = waterPlane.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          const u = pos.getX(i);
+          const v = pos.getY(i);
+          const zVal = Math.sin(u * 2.2 + elapsedTime * 2.2) * 0.035 + Math.cos(v * 2.2 + elapsedTime * 1.8) * 0.035;
+          pos.setZ(i, zVal);
+        }
+        waterPlane.geometry.attributes.position.needsUpdate = true;
+        waterPlane.geometry.computeVertexNormals();
+      }
+
+      if (swimmer) {
+        swimmer.position.z = Math.sin(elapsedTime * 0.8) * 1.6;
+        swimmer.rotation.y = Math.cos(elapsedTime * 0.8) * 0.12;
+      }
+
       // Floating dust movement
       if (particlesRef.current) {
+        const pSpeedMultiplier = 1 + scrollProgressRef.current * 5.0; // move up to 6x faster when scrolling
         const posArr = particlesRef.current.geometry.attributes.position.array as Float32Array;
         for (let i = 0; i < particleCount; i++) {
           // move Y up and down
-          posArr[i * 3 + 1] += Math.sin(elapsedTime * 0.2 + i) * 0.0012 + speeds[i] * 0.01;
+          posArr[i * 3 + 1] += (Math.sin(elapsedTime * 0.2 + i) * 0.0012 + speeds[i] * 0.01) * pSpeedMultiplier;
           // drift X slightly
           posArr[i * 3] += Math.cos(elapsedTime * 0.1 + i) * 0.0005;
 
@@ -756,16 +1054,13 @@ export default function Hero() {
 
       // Dispose geometries & materials recursively
       scene.traverse((obj) => {
-        if (obj instanceof THREE.Mesh) {
+        if (obj instanceof THREE.Mesh || obj instanceof THREE.Points || obj instanceof THREE.Line) {
           obj.geometry.dispose();
           if (Array.isArray(obj.material)) {
             obj.material.forEach((m) => m.dispose());
           } else {
             obj.material.dispose();
           }
-        } else if (obj instanceof THREE.Points) {
-          obj.geometry.dispose();
-          obj.material.dispose();
         }
       });
 
@@ -799,6 +1094,18 @@ export default function Hero() {
         onUpdate: (self) => {
           if (!cameraRef.current || !dumbbellRef.current) return;
           const p = self.progress;
+          scrollProgressRef.current = p;
+
+          // DOM Updates for vertical progress indicator (high performance)
+          const pFill = document.getElementById('scroll-progress-fill');
+          const pTxt = document.getElementById('scroll-progress-text');
+          const pInd = document.getElementById('scroll-progress-indicator');
+          if (pFill) pFill.style.height = `${p * 100}%`;
+          if (pTxt) pTxt.textContent = `${Math.round(p * 100)}%`;
+          if (pInd) {
+            pInd.style.opacity = p > 0.88 ? '0' : '1';
+            pInd.style.visibility = p > 0.88 ? 'hidden' : 'visible';
+          }
 
           // 1. First Phase (0 to 0.15): Close dumbbell rotation orbit
           if (p <= 0.15) {
@@ -1005,12 +1312,12 @@ export default function Hero() {
         )}
       </div>
 
-      {/* HTML Layout Content - Centered */}
-      <div className="w-full flex-grow flex flex-col justify-center items-center px-6 text-center z-20 mt-16">
+      {/* HTML Layout Content - Left Aligned */}
+      <div className="w-full flex-grow flex flex-col justify-center items-start px-8 sm:px-16 md:px-24 text-left z-20 mt-20 md:mt-28 max-w-4xl mr-auto">
         {/* Title: Hidden initially, splits and animates on enter */}
         <h1
           ref={titleRef}
-          className="font-heading text-6xl sm:text-8xl md:text-9xl tracking-tight text-white mb-6 uppercase leading-[0.85] select-none"
+          className="font-heading text-6xl sm:text-8xl md:text-9xl tracking-tight text-white mb-6 uppercase leading-[0.85] text-left select-none"
         >
           <span className="title-word-mask mr-4">
             <span className="title-word-inner">TRAIN</span>
@@ -1032,7 +1339,7 @@ export default function Hero() {
         </h1>
 
         {/* Subtitle */}
-        <div ref={subtitleRef} className="max-w-[600px] opacity-0 translate-y-12 select-none mb-10">
+        <div ref={subtitleRef} className="max-w-[550px] opacity-0 translate-y-12 select-none mb-10 text-left">
           <p className="font-body text-xs sm:text-sm md:text-base text-gray-300 tracking-wide leading-relaxed">
             Ahmedabad&apos;s finest 35,000 sq ft luxury fitness club in Motera. 
             Step into an elite training experience engineered with world-class biomechanical equipment, 
@@ -1043,7 +1350,7 @@ export default function Hero() {
         {/* Action Buttons */}
         <div
           ref={ctaContainerRef}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center opacity-0 translate-y-12 z-30"
+          className="flex flex-col sm:flex-row gap-6 justify-start items-center opacity-0 translate-y-12 z-30 w-full"
         >
           {/* Primary: JOIN NOW (Liquid & Magnetic Glow) */}
           <Link
@@ -1115,6 +1422,28 @@ export default function Hero() {
           >
             <ArrowRight className="w-6 h-6" />
           </Link>
+        </div>
+      )}
+
+      {/* Scroll progress indicator */}
+      {hasEntered && (
+        <div
+          id="scroll-progress-indicator"
+          className="fixed right-8 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-4 z-40 transition-opacity duration-300 pointer-events-none"
+        >
+          <span className="text-[9px] text-gray-500 uppercase tracking-widest select-none mb-2" style={{ writingMode: 'vertical-lr' }}>
+            SCROLL
+          </span>
+          <div className="w-[2px] h-32 bg-white/10 rounded-full relative overflow-hidden">
+            <div
+              id="scroll-progress-fill"
+              className="absolute top-0 left-0 w-full bg-accent shadow-[0_0_8px_#FFD100]"
+              style={{ height: '0%' }}
+            />
+          </div>
+          <span id="scroll-progress-text" className="text-[10px] text-accent font-mono">
+            0%
+          </span>
         </div>
       )}
     </section>
