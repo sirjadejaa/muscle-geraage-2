@@ -67,9 +67,20 @@ export default function WhyChooseUs() {
     <section
       ref={containerRef}
       id="why-choose-us"
-      className="relative bg-secondary py-24 md:py-32 px-6 border-t border-white/5 z-30"
+      className="relative bg-secondary py-24 md:py-32 px-6 border-t border-white/5 z-30 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Premium Texture Overlay */}
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518063319789-7217e6706b04?q=80&w=1920')] bg-cover bg-center opacity-8 mix-blend-luminosity pointer-events-none" />
+      
+      {/* Golden Luxury Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,209,0,0.06)_0%,transparent_70%)] pointer-events-none" />
+      
+      {/* Giant Typographic Watermark to fill empty space */}
+      <div className="absolute bottom-6 right-0 font-heading text-[15vw] tracking-[0.1em] text-white/[0.015] uppercase select-none pointer-events-none leading-none z-0">
+        LIMITLESS
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="mb-16 md:mb-20 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
