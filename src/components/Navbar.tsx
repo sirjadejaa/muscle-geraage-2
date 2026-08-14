@@ -36,10 +36,10 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
-  // Handle scroll effect
+  // Scroll glassmorphism state
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 25);
+      setIsScrolled(window.scrollY > 20);
     };
 
     handleScroll();
@@ -47,11 +47,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Track active section via IntersectionObserver
+  // IntersectionObserver for active section highlighting
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -70% 0px',
+      rootMargin: '-20% 0px -65% 0px',
       threshold: 0,
     };
 
@@ -86,7 +86,7 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // Prevent background scroll when mobile drawer is open
+  // Lock body scroll when mobile menu is active
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -110,7 +110,7 @@ export default function Navbar() {
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
     if (element) {
-      const navOffset = 80;
+      const navOffset = 75;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - navOffset;
 
@@ -126,93 +126,98 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-auto ${
           isScrolled
-            ? 'glass-nav py-2.5 sm:py-3 shadow-[0_10px_30px_rgba(0,0,0,0.85)]'
-            : 'bg-gradient-to-b from-black/95 via-black/70 to-transparent py-3 sm:py-4'
+            ? 'glass-nav py-2.5 sm:py-3 shadow-[0_10px_35px_rgba(0,0,0,0.9)]'
+            : 'bg-gradient-to-b from-black/95 via-black/70 to-transparent py-3.5 sm:py-5'
         }`}
         style={{
           left: 0,
           right: 0,
           width: '100%',
-          maxWidth: '100vw',
           boxSizing: 'border-box',
         }}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4">
-          {/* Brand Logo */}
-          <a
-            href="#hero"
-            onClick={(e) => scrollToSection(e, '#hero')}
-            className="group flex items-center gap-2 sm:gap-3 cursor-pointer select-none flex-shrink-0"
-          >
-            {/* Logo Badge Icon */}
-            <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-accent via-accent-dark to-yellow-600 p-[1px] flex items-center justify-center shadow-[0_0_15px_rgba(255,209,0,0.3)] group-hover:shadow-[0_0_25px_rgba(255,209,0,0.6)] transition-all duration-300 flex-shrink-0">
-              <div className="w-full h-full bg-black rounded-[7px] flex items-center justify-center">
-                <span className="font-heading text-base sm:text-lg md:text-xl text-accent font-black tracking-tighter group-hover:scale-110 transition-transform duration-300">
-                  MG
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-[auto_1fr_auto] items-center gap-4">
+          {/* 1. Left Column: Brand Logo */}
+          <div className="flex items-center justify-start">
+            <a
+              href="#hero"
+              onClick={(e) => scrollToSection(e, '#hero')}
+              className="group flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none"
+            >
+              {/* Logo Badge Icon */}
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-accent via-accent-dark to-yellow-600 p-[1px] flex items-center justify-center shadow-[0_0_15px_rgba(255,209,0,0.3)] group-hover:shadow-[0_0_25px_rgba(255,209,0,0.6)] transition-all duration-300 flex-shrink-0">
+                <div className="w-full h-full bg-black rounded-[7px] flex items-center justify-center">
+                  <span className="font-heading text-lg sm:text-xl text-accent font-black tracking-tighter group-hover:scale-110 transition-transform duration-300">
+                    MG
+                  </span>
+                </div>
+              </div>
+
+              {/* Logo Typography */}
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1 leading-none">
+                  <span className="font-heading text-2xl sm:text-3xl tracking-wider text-white group-hover:text-accent transition-colors duration-300">
+                    MUSCLE
+                  </span>
+                  <span className="font-heading text-2xl sm:text-3xl tracking-wider text-accent group-hover:text-white transition-colors duration-300">
+                    GARAAGE
+                  </span>
+                </div>
+                <span className="text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.3em] uppercase text-gray-400 group-hover:text-accent/80 transition-colors duration-300 -mt-0.5 font-medium">
+                  Motera · Ahmedabad
                 </span>
               </div>
-            </div>
+            </a>
+          </div>
 
-            {/* Logo Typography */}
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1 leading-none">
-                <span className="font-heading text-xl sm:text-2xl md:text-3xl tracking-wider text-white group-hover:text-accent transition-colors duration-300">
-                  MUSCLE
-                </span>
-                <span className="font-heading text-xl sm:text-2xl md:text-3xl tracking-wider text-accent group-hover:text-white transition-colors duration-300">
-                  GARAAGE
-                </span>
-              </div>
-              <span className="text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.25em] sm:tracking-[0.3em] uppercase text-gray-400 group-hover:text-accent/80 transition-colors duration-300 -mt-0.5 font-medium">
-                Motera · Ahmedabad
-              </span>
-            </div>
-          </a>
+          {/* 2. Center Column: Perfectly Centered Navigation Links */}
+          <div className="hidden lg:flex items-center justify-center">
+            {/* Desktop full navigation for xl+ screens */}
+            <nav className="hidden xl:flex items-center gap-1 bg-neutral-950/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner">
+              {desktopNavItems.map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => scrollToSection(e, item.href)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.12em] transition-all duration-300 whitespace-nowrap ${
+                      isActive
+                        ? 'text-black bg-accent font-bold shadow-[0_0_15px_rgba(255,209,0,0.5)]'
+                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {item.name}
+                  </a>
+                );
+              })}
+            </nav>
 
-          {/* Desktop Navigation Links (xl:flex for full list, lg:flex for compact) */}
-          <nav className="hidden xl:flex items-center gap-1 bg-neutral-950/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner flex-shrink">
-            {desktopNavItems.map((item) => {
-              const isActive = activeSection === item.id;
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => scrollToSection(e, item.href)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.12em] transition-all duration-300 whitespace-nowrap ${
-                    isActive
-                      ? 'text-black bg-accent font-bold shadow-[0_0_15px_rgba(255,209,0,0.5)]'
-                      : 'text-gray-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {item.name}
-                </a>
-              );
-            })}
-          </nav>
+            {/* Compact navigation for lg screens */}
+            <nav className="hidden lg:flex xl:hidden items-center gap-1 bg-neutral-950/80 p-1 rounded-full border border-white/10 backdrop-blur-md">
+              {desktopNavItems.slice(0, 5).map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => scrollToSection(e, item.href)}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
+                      isActive
+                        ? 'text-black bg-accent font-bold'
+                        : 'text-gray-300 hover:text-white'
+                    }`}
+                  >
+                    {item.name}
+                  </a>
+                );
+              })}
+            </nav>
+          </div>
 
-          {/* Compact Links for Medium Screens (lg:flex, xl:hidden) */}
-          <nav className="hidden lg:flex xl:hidden items-center gap-1 bg-neutral-950/80 p-1 rounded-full border border-white/10 backdrop-blur-md">
-            {desktopNavItems.slice(0, 5).map((item) => {
-              const isActive = activeSection === item.id;
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => scrollToSection(e, item.href)}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
-                    isActive
-                      ? 'text-black bg-accent font-bold'
-                      : 'text-gray-300 hover:text-white'
-                  }`}
-                >
-                  {item.name}
-                </a>
-              );
-            })}
-          </nav>
-
-          {/* Right CTA Action */}
-          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+          {/* 3. Right Column: CTA Action & Contact */}
+          <div className="flex items-center justify-end gap-3">
+            {/* Desktop Quick Call */}
             <a
               href="tel:+919876543210"
               className="hidden 2xl:flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-accent transition-colors font-mono"
@@ -223,38 +228,39 @@ export default function Navbar() {
               <span>+91 98765 43210</span>
             </a>
 
+            {/* Desktop CTA Button */}
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, '#contact')}
-              className="group relative inline-flex items-center gap-2 overflow-hidden bg-accent px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,0,0.5)] active:scale-95 whitespace-nowrap shadow-md"
+              className="hidden lg:inline-flex group relative items-center gap-2 overflow-hidden bg-accent px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,0,0.5)] active:scale-95 whitespace-nowrap shadow-md"
             >
               <Sparkles className="w-3.5 h-3.5 text-black" />
               <span>Book Free Trial</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </a>
-          </div>
 
-          {/* Mobile Right Menu Button */}
-          <div className="flex items-center gap-2 lg:hidden flex-shrink-0">
-            <a
-              href="#contact"
-              onClick={(e) => scrollToSection(e, '#contact')}
-              className="bg-accent text-black px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(255,209,0,0.4)] whitespace-nowrap"
-            >
-              Free Pass
-            </a>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:text-accent hover:border-accent transition-colors focus:outline-none flex-shrink-0"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            {/* Mobile Controls */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <a
+                href="#contact"
+                onClick={(e) => scrollToSection(e, '#contact')}
+                className="bg-accent text-black px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(255,209,0,0.4)] whitespace-nowrap"
+              >
+                Free Pass
+              </a>
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:text-accent hover:border-accent transition-colors focus:outline-none"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Luxury Fullscreen Mobile Navigation Drawer */}
+      {/* Fullscreen Mobile Navigation Drawer */}
       <div
         className={`fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl transition-all duration-500 lg:hidden flex flex-col justify-between p-6 sm:p-8 ${
           isMobileMenuOpen
