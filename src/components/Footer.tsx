@@ -22,24 +22,24 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-black border-t border-white/10 pt-20 pb-12 px-4 sm:px-6 lg:px-8 z-30 overflow-hidden select-none">
+    <footer className="relative bg-black border-t border-white/10 pt-16 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6 lg:px-8 z-30 overflow-hidden select-none m-0">
       {/* Background shadow glow */}
-      <div className="absolute bottom-0 right-0 w-[50vw] h-[50vw] bg-accent/2 rounded-full filter blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent/2 rounded-full filter blur-[150px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto flex flex-col gap-16 relative z-10">
+      <div className="max-w-7xl mx-auto flex flex-col gap-12 sm:gap-16 relative z-10">
         {/* Main Footer Multi-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Column 1: Brand Wordmark & Google Rating Badge (lg:col-span-4) */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
+          <div className="lg:col-span-4 flex flex-col gap-5">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-lg bg-accent flex items-center justify-center text-black font-heading font-black text-2xl shadow-[0_0_20px_rgba(255,209,0,0.4)]">
+              <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-black font-heading font-black text-2xl shadow-[0_0_20px_rgba(255,209,0,0.4)]">
                 MG
               </div>
               <div className="flex flex-col">
                 <span className="font-heading text-3xl tracking-wider text-white">
                   MUSCLE <span className="text-accent">GARAAGE</span>
                 </span>
-                <span className="text-[9px] tracking-[0.35em] uppercase text-gray-400 -mt-1">
+                <span className="text-[9px] tracking-[0.35em] uppercase text-gray-400 -mt-1 font-medium">
                   Motera · Ahmedabad
                 </span>
               </div>
@@ -70,13 +70,13 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Quick Links (lg:col-span-2) */}
-          <div className="lg:col-span-2 flex flex-col gap-4">
-            <span className="font-heading text-lg text-white uppercase tracking-wider border-b border-white/10 pb-2">
+          <div className="lg:col-span-2 flex flex-col gap-3">
+            <span className="font-heading text-base sm:text-lg text-white uppercase tracking-wider border-b border-white/10 pb-2">
               QUICK LINKS
             </span>
-            <ul className="flex flex-col gap-2.5 text-xs text-gray-400 font-medium">
+            <ul className="flex flex-col gap-2 text-xs text-gray-400 font-medium">
               <li>
-                <a href="#hero" className="hover:text-accent transition-colors flex items-center gap-1">
+                <a href="#hero" className="hover:text-accent transition-colors">
                   Home
                 </a>
               </li>
@@ -124,11 +124,11 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Facilities & Programs (lg:col-span-3) */}
-          <div className="lg:col-span-3 flex flex-col gap-4">
-            <span className="font-heading text-lg text-white uppercase tracking-wider border-b border-white/10 pb-2">
+          <div className="lg:col-span-3 flex flex-col gap-3">
+            <span className="font-heading text-base sm:text-lg text-white uppercase tracking-wider border-b border-white/10 pb-2">
               FACILITIES & PROGRAMS
             </span>
-            <ul className="flex flex-col gap-2.5 text-xs text-gray-400 font-medium">
+            <ul className="flex flex-col gap-2 text-xs text-gray-400 font-medium">
               <li>
                 <a href="#facilities" className="hover:text-accent transition-colors">
                   Panatta Strength Zone (Italy)
@@ -173,34 +173,34 @@ export default function Footer() {
           </div>
 
           {/* Column 4: Contact Information & Newsletter (lg:col-span-3) */}
-          <div className="lg:col-span-3 flex flex-col gap-4">
-            <span className="font-heading text-lg text-white uppercase tracking-wider border-b border-white/10 pb-2">
+          <div className="lg:col-span-3 flex flex-col gap-3">
+            <span className="font-heading text-base sm:text-lg text-white uppercase tracking-wider border-b border-white/10 pb-2">
               CONTACT & LOCATION
             </span>
 
-            <div className="flex flex-col gap-3 text-xs text-gray-300 font-medium">
-              <div className="flex items-start gap-2.5">
+            <div className="flex flex-col gap-2.5 text-xs text-gray-300 font-medium">
+              <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                 <span className="leading-relaxed">
                   4th Floor, Apex Titanium, Near Narendra Modi Stadium, Motera, Ahmedabad 380005
                 </span>
               </div>
 
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-accent flex-shrink-0" />
                 <a href="tel:+919876543210" className="hover:text-accent transition-colors font-mono">
                   +91 98765 43210
                 </a>
               </div>
 
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-accent flex-shrink-0" />
                 <a href="mailto:contact@musclegaraage.com" className="hover:text-accent transition-colors">
                   contact@musclegaraage.com
                 </a>
               </div>
 
-              <div className="flex items-start gap-2.5">
+              <div className="flex items-start gap-2">
                 <Clock className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                 <span>Mon–Sat: 6 AM – 10 PM | Sun: 8 AM – 2 PM</span>
               </div>
@@ -208,10 +208,10 @@ export default function Footer() {
 
             {/* Newsletter Subscription */}
             <div className="mt-2 pt-3 border-t border-white/5">
-              <span className="text-[11px] uppercase font-bold tracking-widest text-accent block mb-2">
+              <span className="text-[11px] uppercase font-bold tracking-widest text-accent block mb-1">
                 OBSIDIAN JOURNAL
               </span>
-              <p className="text-[11px] text-gray-400 mb-3">
+              <p className="text-[11px] text-gray-400 mb-2.5">
                 Subscribe for training protocols, diet blueprints & member event priority.
               </p>
 
@@ -227,14 +227,14 @@ export default function Footer() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter email address"
                     required
-                    className="bg-neutral-900 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:border-accent focus:outline-none flex-grow"
+                    className="bg-neutral-900 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-gray-500 focus:border-accent focus:outline-none flex-grow"
                   />
                   <button
                     type="submit"
-                    className="w-10 h-10 rounded-xl bg-accent text-black flex items-center justify-center hover:bg-white transition-colors flex-shrink-0 shadow"
+                    className="w-9 h-9 rounded-xl bg-accent text-black flex items-center justify-center hover:bg-white transition-colors flex-shrink-0 shadow"
                     aria-label="Subscribe to newsletter"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-3.5 h-3.5" />
                   </button>
                 </form>
               )}
@@ -243,9 +243,9 @@ export default function Footer() {
         </div>
 
         {/* Large Typographic Watermark Banner with Back-to-Top Button */}
-        <div className="border-t border-b border-white/10 py-8 text-center relative">
+        <div className="border-t border-b border-white/10 py-6 text-center relative">
           <h2
-            className="font-heading text-[11vw] leading-none text-transparent tracking-tighter uppercase select-none pointer-events-none"
+            className="font-heading text-[10vw] leading-none text-transparent tracking-tighter uppercase select-none pointer-events-none"
             style={{
               WebkitTextStroke: '1px rgba(255, 255, 255, 0.07)',
             }}
@@ -256,19 +256,19 @@ export default function Footer() {
           {/* Smooth Back-to-Top Floating Button */}
           <button
             onClick={scrollToTop}
-            className="absolute top-1/2 right-4 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-900 border border-white/20 hover:border-accent hover:bg-accent text-white hover:text-black flex items-center justify-center transition-all duration-300 shadow-xl group"
+            className="absolute top-1/2 right-2 sm:right-4 -translate-y-1/2 w-11 h-11 rounded-full bg-neutral-900 border border-white/20 hover:border-accent hover:bg-accent text-white hover:text-black flex items-center justify-center transition-all duration-300 shadow-xl group"
             aria-label="Scroll back to top"
           >
             <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
         </div>
 
-        {/* Bottom Legal, Socials & Copyright Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-xs">
+        {/* Bottom Legal, Socials & Copyright Bar (Ends flush with bottom) */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-xs pb-2">
           <span>© 2026 Muscle Garaage Luxury Fitness Club. All Rights Reserved. Motera, Ahmedabad.</span>
 
           {/* Social Icons with Clean SVGs */}
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-3.5 items-center">
             <a
               href="https://instagram.com"
               target="_blank"

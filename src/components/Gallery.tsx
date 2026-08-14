@@ -37,14 +37,16 @@ export default function Gallery() {
 
     gsap.from('.gallery-card', {
       opacity: 0,
-      scale: 0.95,
-      y: 30,
-      duration: 0.7,
-      stagger: 0.06,
+      scale: 0.94,
+      y: 40,
+      filter: 'blur(6px)',
+      duration: 0.75,
+      stagger: 0.05,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
   }, { dependencies: [filter], scope: containerRef });
@@ -87,7 +89,7 @@ export default function Gallery() {
     <section
       ref={containerRef}
       id="gallery"
-      className="relative bg-black py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-black py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute top-1/3 left-1/3 w-[600px] h-[600px] bg-accent/2 rounded-full filter blur-[180px] pointer-events-none" />
@@ -101,59 +103,61 @@ export default function Gallery() {
               VISUAL SANCTUARY
             </span>
           </div>
-          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-6">
-            THE GALLERY <br />
-            <span className="gold-gradient-text">OF CHAMPIONS</span>
+          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-4 sm:mb-6">
+            THE GALLERY OF <br />
+            <span className="gold-gradient-text">CHAMPIONS</span>
           </h2>
           <p className="font-body text-sm sm:text-base text-gray-400 leading-relaxed max-w-xl mx-auto">
             Take a closer look at our world-class training zones, Olympic platforms, heated pool, and luxury recovery amenities in Motera.
           </p>
+
+          {/* Category Filter Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mt-8">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`px-4 sm:px-5 py-2 rounded-full text-xs font-heading tracking-widest uppercase transition-all duration-300 ${
+                  filter === cat
+                    ? 'bg-accent text-black font-bold shadow-[0_0_15px_rgba(255,209,0,0.4)]'
+                    : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap gap-2.5 justify-center mb-12">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                filter === cat
-                  ? 'bg-accent text-black shadow-[0_0_15px_rgba(255,209,0,0.4)]'
-                  : 'bg-white/5 border border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Responsive Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {/* Gallery Masonry Grid */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
           {filteredItems.map((item) => (
             <div
               key={item.id}
               onClick={() => openLightbox(item.id)}
-              className="gallery-card group relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-neutral-950 cursor-pointer shadow-lg"
+              className="gallery-card group relative break-inside-avoid rounded-2xl overflow-hidden border border-white/10 bg-neutral-950 cursor-pointer shadow-lg hover:border-accent/50 transition-all duration-300"
             >
-              <img
-                src={item.url}
-                alt={item.title}
-                className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700 ease-out brightness-90 group-hover:brightness-100"
-                loading="lazy"
-                decoding="async"
-              />
+              <div className={`relative w-full ${item.size} overflow-hidden`}>
+                <img
+                  src={item.url}
+                  alt={item.title}
+                  className="w-full h-full object-cover scale-100 group-hover:scale-108 transition-transform duration-700 ease-out"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-70 group-hover:opacity-95 transition-opacity duration-300" />
 
-              {/* Hover Overlay with details */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-5">
-                <div className="self-end w-8 h-8 rounded-full bg-accent text-black flex items-center justify-center shadow-lg">
+                {/* Hover Zoom Icon & Category */}
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all duration-300">
                   <ZoomIn className="w-4 h-4" />
                 </div>
 
-                <div>
-                  <span className="text-[9px] uppercase font-bold tracking-widest text-accent block mb-1">
+                {/* Bottom Overlay Title */}
+                <div className="absolute bottom-0 left-0 w-full p-5 flex flex-col justify-end">
+                  <span className="text-[9px] uppercase font-bold tracking-widest text-accent mb-1">
                     {item.category}
                   </span>
-                  <h4 className="font-heading text-lg uppercase tracking-wider text-white leading-tight">
+                  <h4 className="font-heading text-xl sm:text-2xl uppercase tracking-wider text-white leading-tight group-hover:text-accent transition-colors">
                     {item.title}
                   </h4>
                 </div>
@@ -165,49 +169,51 @@ export default function Gallery() {
 
       {/* Lightbox Modal */}
       {lightboxIdx !== null && (
-        <div className="fixed inset-0 z-[9999] bg-black/98 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-8">
-          {/* Close Button */}
+        <div className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8 select-none">
+          {/* Close button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-6 right-6 w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:text-accent hover:border-accent transition-all z-[10000]"
+            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-accent text-white hover:text-black flex items-center justify-center transition-all z-20 shadow-lg"
             aria-label="Close Lightbox"
           >
             <X className="w-6 h-6" />
           </button>
 
-          {/* Previous Button */}
+          {/* Left arrow */}
           <button
             onClick={prevImage}
-            className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:text-accent hover:border-accent transition-all z-[10000]"
+            className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-accent text-white hover:text-black flex items-center justify-center transition-all z-20 shadow-lg"
             aria-label="Previous Image"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
 
-          {/* Next Button */}
+          {/* Right arrow */}
           <button
             onClick={nextImage}
-            className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:text-accent hover:border-accent transition-all z-[10000]"
+            className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-accent text-white hover:text-black flex items-center justify-center transition-all z-20 shadow-lg"
             aria-label="Next Image"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Active Lightbox Content */}
-          <div className="relative max-w-5xl max-h-[85vh] flex flex-col items-center select-none">
+          {/* Main Image Container */}
+          <div className="relative max-w-5xl max-h-[85vh] w-full flex flex-col items-center">
             <img
               src={filteredItems[lightboxIdx].url}
               alt={filteredItems[lightboxIdx].title}
-              className="max-w-full max-h-[70vh] object-contain rounded-2xl border border-white/15 shadow-2xl"
+              className="max-w-full max-h-[75vh] object-contain rounded-2xl border border-white/20 shadow-2xl"
             />
-            
             <div className="mt-4 text-center">
-              <span className="text-xs uppercase font-bold tracking-widest text-accent block">
+              <span className="text-xs font-bold text-accent uppercase tracking-widest block mb-1">
                 {filteredItems[lightboxIdx].category}
               </span>
-              <h3 className="font-heading text-2xl sm:text-3xl text-white uppercase tracking-wider mt-1">
+              <h3 className="font-heading text-2xl sm:text-3xl text-white uppercase tracking-wider">
                 {filteredItems[lightboxIdx].title}
               </h3>
+              <span className="text-xs text-gray-400 mt-1 block">
+                {lightboxIdx + 1} of {filteredItems.length}
+              </span>
             </div>
           </div>
         </div>

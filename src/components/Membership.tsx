@@ -103,13 +103,29 @@ export default function Membership() {
 
     gsap.from('.membership-card', {
       opacity: 0,
-      y: 40,
-      duration: 0.8,
-      stagger: 0.15,
+      y: 50,
+      scale: 0.94,
+      filter: 'blur(8px)',
+      duration: 0.85,
+      stagger: 0.12,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: '.membership-cards-grid',
         start: 'top 75%',
+        once: true,
+      },
+    });
+
+    gsap.from('.comparison-table-wrapper', {
+      opacity: 0,
+      y: 40,
+      scale: 0.96,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.comparison-table-wrapper',
+        start: 'top 80%',
+        once: true,
       },
     });
   }, { scope: containerRef });
@@ -118,21 +134,21 @@ export default function Membership() {
     <section
       ref={containerRef}
       id="membership"
-      className="relative bg-black py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-black py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-accent/3 rounded-full filter blur-[180px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4">
             <Sparkles className="w-3.5 h-3.5 text-accent" />
             <span className="text-[10px] sm:text-xs text-accent font-bold tracking-[0.4em] uppercase">
               TRANSPARENT VALUE
             </span>
           </div>
-          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-6">
+          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-4 sm:mb-6">
             MEMBERSHIP <br />
             <span className="gold-gradient-text">INVESTMENT TIERS</span>
           </h2>
@@ -142,7 +158,7 @@ export default function Membership() {
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="membership-cards-grid grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
+        <div className="membership-cards-grid grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
           {plans.map((plan, index) => (
             <div
               key={index}
@@ -181,34 +197,33 @@ export default function Membership() {
                   </span>
                 </div>
 
-                {/* Feature Checklist */}
+                {/* Features List */}
                 <div className="flex flex-col gap-3 mb-8">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-gray-400">
-                    Included Benefits:
+                  <span className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">
+                    INCLUDED PRIVILEGES:
                   </span>
                   {plan.features.map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-start gap-2.5 text-xs text-gray-300 font-medium">
+                    <div key={fIdx} className="flex items-start gap-2.5 text-xs text-gray-200">
                       <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </div>
                   ))}
-
-                  {plan.nonFeatures.map((feat, fIdx) => (
-                    <div key={fIdx} className="flex items-start gap-2.5 text-xs text-gray-600 font-medium">
-                      <X className="w-4 h-4 text-gray-700 flex-shrink-0 mt-0.5" />
-                      <span>{feat}</span>
+                  {plan.nonFeatures.map((nonFeat, nfIdx) => (
+                    <div key={nfIdx} className="flex items-start gap-2.5 text-xs text-gray-600">
+                      <X className="w-4 h-4 text-gray-600 flex-shrink-0 mt-0.5" />
+                      <span>{nonFeat}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Card CTA */}
+              {/* Action Button */}
               <a
                 href="#contact"
-                className={`w-full py-4 rounded-xl font-heading text-lg uppercase tracking-wider text-center transition-all duration-300 flex items-center justify-center gap-2 ${
+                className={`w-full py-3.5 rounded-xl font-heading text-base uppercase tracking-widest text-center flex items-center justify-center gap-2 transition-all font-bold ${
                   plan.popular
-                    ? 'bg-accent text-black font-bold hover:bg-white hover:shadow-[0_0_25px_rgba(255,209,0,0.6)]'
-                    : 'bg-white/10 text-white hover:bg-white hover:text-black font-bold border border-white/10'
+                    ? 'bg-accent text-black hover:bg-white shadow-[0_0_20px_rgba(255,209,0,0.4)]'
+                    : 'bg-white/10 text-white hover:bg-accent hover:text-black'
                 }`}
               >
                 <span>Select {plan.name}</span>
@@ -218,61 +233,57 @@ export default function Membership() {
           ))}
         </div>
 
-        {/* Inclusions Matrix Table */}
-        <div className="glass-panel p-6 sm:p-10 rounded-3xl border border-white/10">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        {/* Detailed Side-by-Side Comparison Matrix */}
+        <div className="comparison-table-wrapper bg-neutral-950 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 border-b border-white/10 pb-6">
             <div>
-              <span className="text-xs text-accent font-bold tracking-[0.3em] uppercase block mb-1">
-                SIDE-BY-SIDE MATRIX
+              <span className="text-[10px] text-accent font-bold uppercase tracking-[0.3em] block mb-1">
+                COMPREHENSIVE MATRIX
               </span>
-              <h3 className="font-heading text-3xl sm:text-4xl uppercase tracking-wider text-white">
-                DETAILED <span className="text-accent">TIER COMPARISON</span>
+              <h3 className="font-heading text-3xl sm:text-4xl text-white uppercase tracking-wider">
+                DETAILED TIER COMPARISON
               </h3>
             </div>
-            <span className="text-xs text-gray-400">
-              Need custom corporate plans? <a href="#contact" className="text-accent underline font-semibold">Contact Concierge</a>
-            </span>
+            <a
+              href="#contact"
+              className="text-xs text-accent font-semibold uppercase tracking-wider hover:underline flex items-center gap-1"
+            >
+              Have customized corporate questions? Contact Concierge →
+            </a>
           </div>
 
           <div className="overflow-x-auto no-scrollbar">
             <table className="w-full text-left border-collapse min-w-[650px]">
               <thead>
                 <tr className="border-b border-white/10">
-                  {comparisonData.columns.map((col, cIdx) => (
-                    <th
-                      key={cIdx}
-                      className={`py-4 px-4 sm:px-6 font-heading text-base uppercase tracking-wider ${
-                        cIdx === 0
-                          ? 'text-gray-400 w-2/5'
-                          : cIdx === 2
-                          ? 'text-accent'
-                          : 'text-white'
-                      }`}
-                    >
-                      {col}
-                    </th>
-                  ))}
+                  <th className="py-4 px-4 font-heading text-sm text-gray-400 uppercase tracking-widest">
+                    Feature Inclusions
+                  </th>
+                  <th className="py-4 px-4 font-heading text-sm text-gray-400 uppercase tracking-widest text-center">
+                    Monthly Elite
+                  </th>
+                  <th className="py-4 px-4 font-heading text-sm text-accent uppercase tracking-widest text-center">
+                    Annual Club
+                  </th>
+                  <th className="py-4 px-4 font-heading text-sm text-yellow-500 uppercase tracking-widest text-center">
+                    VIP Obsidian
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-white/5 text-xs">
                 {comparisonData.rows.map((row, rIdx) => (
-                  <tr
-                    key={rIdx}
-                    className="border-b border-white/5 hover:bg-white/[0.02] transition-colors"
-                  >
-                    <td className="py-3.5 px-4 sm:px-6 font-body text-xs font-semibold text-gray-300">
-                      {row.name}
-                    </td>
+                  <tr key={rIdx} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-4 px-4 text-gray-300 font-medium">{row.name}</td>
                     {row.values.map((val, vIdx) => (
-                      <td key={vIdx} className="py-3.5 px-4 sm:px-6 font-body text-xs text-gray-400">
+                      <td key={vIdx} className="py-4 px-4 text-center">
                         {typeof val === 'boolean' ? (
                           val ? (
-                            <Check className="w-4 h-4 text-accent" />
+                            <Check className="w-4 h-4 text-accent mx-auto" />
                           ) : (
-                            <X className="w-4 h-4 text-gray-700" />
+                            <X className="w-4 h-4 text-gray-600 mx-auto" />
                           )
                         ) : (
-                          <span className="text-white font-medium text-xs">{val}</span>
+                          <span className="font-semibold text-gray-200">{val}</span>
                         )}
                       </td>
                     ))}

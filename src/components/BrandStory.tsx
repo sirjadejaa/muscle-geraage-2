@@ -52,12 +52,15 @@ export default function BrandStory() {
     gsap.from('.brand-story-card', {
       opacity: 0,
       y: 50,
-      duration: 0.9,
-      stagger: 0.25,
+      scale: 0.94,
+      filter: 'blur(8px)',
+      duration: 0.85,
+      stagger: 0.15,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
   }, { scope: containerRef });
@@ -66,18 +69,18 @@ export default function BrandStory() {
     <section
       ref={containerRef}
       id="brand-story"
-      className="relative bg-black py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-black py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Ambient background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full filter blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-4 block">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-3 block">
             THE PHILOSOPHY
           </span>
-          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-6">
+          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-4 sm:mb-6">
             BEYOND FITNESS. <br />
             <span className="gold-gradient-text">A BESPOKE STANDARD.</span>
           </h2>
@@ -87,7 +90,7 @@ export default function BrandStory() {
         </div>
 
         {/* 3 Chapters Showcase */}
-        <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24">
+        <div className="flex flex-col gap-10 sm:gap-12 lg:gap-16">
           {stories.map((story, idx) => {
             const Icon = story.icon;
             const isReversed = idx % 2 !== 0;
@@ -95,7 +98,7 @@ export default function BrandStory() {
             return (
               <div
                 key={story.number}
-                className={`brand-story-card grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center p-6 sm:p-10 lg:p-12 rounded-3xl bg-neutral-950/80 border border-white/10 relative overflow-hidden transition-all duration-500 hover:border-accent/40 ${
+                className={`brand-story-card grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center p-6 sm:p-8 lg:p-10 rounded-3xl bg-neutral-950/80 border border-white/10 relative overflow-hidden transition-all duration-500 hover:border-accent/40 shadow-xl ${
                   isReversed ? 'lg:flex-row-reverse' : ''
                 }`}
               >
@@ -122,11 +125,11 @@ export default function BrandStory() {
                   <h3 className="font-heading text-3xl sm:text-4xl md:text-5xl uppercase tracking-wide text-white mb-2 leading-tight">
                     {story.title}
                   </h3>
-                  <span className="text-xs sm:text-sm text-gray-400 uppercase tracking-widest font-semibold mb-6 block">
+                  <span className="text-xs sm:text-sm text-gray-400 uppercase tracking-widest font-semibold mb-4 sm:mb-6 block">
                     {story.subtitle}
                   </span>
 
-                  <p className="font-body text-sm sm:text-base text-gray-300 leading-relaxed mb-8">
+                  <p className="font-body text-sm sm:text-base text-gray-300 leading-relaxed mb-6 sm:mb-8">
                     {story.description}
                   </p>
 

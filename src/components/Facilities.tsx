@@ -1,7 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { ChevronRight, ArrowRight, Sparkles, CheckCircle } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ChevronRight, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const facilities = [
   {
@@ -70,30 +77,63 @@ const facilities = [
 ];
 
 export default function Facilities() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [selectedIdx, setSelectedIdx] = useState<number>(0);
+
+  useGSAP(() => {
+    if (!containerRef.current) return;
+
+    gsap.from('.facility-card-item', {
+      opacity: 0,
+      x: -30,
+      scale: 0.95,
+      filter: 'blur(6px)',
+      duration: 0.8,
+      stagger: 0.08,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 75%',
+        once: true,
+      },
+    });
+
+    gsap.from('.facility-preview-card', {
+      opacity: 0,
+      scale: 0.94,
+      duration: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 75%',
+        once: true,
+      },
+    });
+  }, { scope: containerRef });
 
   return (
     <section
+      ref={containerRef}
       id="facilities"
-      className="relative bg-black min-h-screen py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 flex items-center overflow-hidden z-30 border-t border-white/5"
+      className="relative bg-black py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Background Image Showcase with Transition */}
-      <div className="absolute inset-0 w-full h-full z-0">
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
         {facilities.map((fac, idx) => (
           <div
             key={fac.id}
             className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000 ease-out ${
-              selectedIdx === idx ? 'opacity-35 scale-105 filter brightness-90' : 'opacity-0 scale-100'
+              selectedIdx === idx ? 'opacity-30 scale-105 filter brightness-90' : 'opacity-0 scale-100'
             }`}
             style={{ backgroundImage: `url(${fac.image})` }}
           />
         ))}
         {/* Dark Gradients to ensure text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative z-10">
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative z-10 items-center">
         {/* Left Side: Facility Selector List */}
         <div className="lg:col-span-7 flex flex-col justify-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 w-fit mb-4">
@@ -103,7 +143,7 @@ export default function Facilities() {
             </span>
           </div>
 
-          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl tracking-tight text-white mb-8 sm:mb-10 uppercase leading-none">
+          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl tracking-tight text-white mb-6 sm:mb-8 uppercase leading-none">
             THE LUXURY <br />
             <span className="gold-gradient-text">TRAINING ARENAS</span>
           </h2>
@@ -117,14 +157,14 @@ export default function Facilities() {
                   key={fac.id}
                   onClick={() => setSelectedIdx(idx)}
                   onMouseEnter={() => setSelectedIdx(idx)}
-                  className={`w-full py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl text-left border transition-all duration-300 flex items-center justify-between group ${
+                  className={`facility-card-item w-full py-3.5 px-4 sm:px-6 rounded-xl text-left border transition-all duration-300 flex items-center justify-between group ${
                     isSelected
-                      ? 'bg-neutral-900/80 border-accent text-accent shadow-[0_0_20px_rgba(255,209,0,0.15)]'
-                      : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/20 hover:text-white'
+                      ? 'bg-neutral-900/90 border-accent text-accent shadow-[0_0_20px_rgba(255,209,0,0.15)]'
+                      : 'bg-black/50 border-white/5 text-gray-400 hover:border-white/20 hover:text-white'
                   }`}
                 >
                   <div className="flex flex-col">
-                    <span className="font-heading text-2xl sm:text-3xl md:text-4xl uppercase tracking-wider leading-none">
+                    <span className="font-heading text-2xl sm:text-3xl uppercase tracking-wider leading-none">
                       {fac.name}
                     </span>
                     <span className="text-[11px] sm:text-xs text-gray-400 uppercase tracking-wider font-semibold mt-1">
@@ -132,9 +172,13 @@ export default function Facilities() {
                     </span>
                   </div>
 
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    isSelected ? 'bg-accent text-black translate-x-1' : 'bg-white/5 text-gray-500 group-hover:text-white'
-                  }`}>
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      isSelected
+                        ? 'bg-accent text-black translate-x-1 shadow'
+                        : 'bg-white/5 text-gray-500 group-hover:text-white'
+                    }`}
+                  >
                     <ChevronRight className="w-4 h-4" />
                   </div>
                 </button>
@@ -145,7 +189,7 @@ export default function Facilities() {
 
         {/* Right Side: Active Arena Feature Card */}
         <div className="lg:col-span-5 flex flex-col justify-center">
-          <div className="glass-panel p-6 sm:p-8 md:p-10 rounded-2xl relative overflow-hidden flex flex-col justify-between border-accent/30 shadow-2xl">
+          <div className="facility-preview-card glass-panel p-6 sm:p-8 md:p-10 rounded-2xl relative overflow-hidden flex flex-col justify-between border-accent/30 shadow-2xl">
             {/* Top Accent line */}
             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-accent via-accent-dark to-transparent" />
 
@@ -157,7 +201,7 @@ export default function Facilities() {
               <h3 className="font-heading text-3xl sm:text-4xl text-white uppercase tracking-wider mb-2">
                 {facilities[selectedIdx].name}
               </h3>
-              
+
               <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg text-xs text-accent font-semibold mb-4 inline-block">
                 {facilities[selectedIdx].specs}
               </div>

@@ -86,13 +86,16 @@ export default function Programs() {
 
     gsap.from('.program-card', {
       opacity: 0,
-      y: 40,
+      y: 50,
+      scale: 0.93,
+      filter: 'blur(8px)',
       duration: 0.8,
-      stagger: 0.1,
+      stagger: 0.08,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
   }, { scope: containerRef });
@@ -101,14 +104,14 @@ export default function Programs() {
     <section
       ref={containerRef}
       id="programs"
-      className="relative bg-neutral-950 py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-neutral-950 py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-accent/3 rounded-full filter blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="mb-14 sm:mb-20 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mb-12 sm:mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4">
               <Sparkles className="w-3.5 h-3.5 text-accent" />
@@ -116,7 +119,7 @@ export default function Programs() {
                 CURATED DISCIPLINES
               </span>
             </div>
-            <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none">
+            <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl tracking-tight text-white uppercase leading-none">
               ELITE TRAINING <br />
               <span className="gold-gradient-text">PROGRAMS</span>
             </h2>
@@ -135,7 +138,7 @@ export default function Programs() {
                 key={prog.title}
                 onMouseEnter={() => setActiveCard(idx)}
                 onMouseLeave={() => setActiveCard(null)}
-                className="program-card group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-black transition-all duration-500 hover:border-accent/60 hover:shadow-[0_0_25px_rgba(255,209,0,0.2)] flex flex-col justify-between p-6"
+                className="program-card group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-black transition-all duration-500 hover:border-accent/60 hover:shadow-[0_0_25px_rgba(255,209,0,0.2)] flex flex-col justify-between p-6 shadow-xl"
               >
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
@@ -159,7 +162,7 @@ export default function Programs() {
                       {prog.title}
                     </h3>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white group-hover:bg-accent group-hover:text-black transition-all duration-300">
+                  <div className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white group-hover:bg-accent group-hover:text-black transition-all duration-300 shadow">
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>

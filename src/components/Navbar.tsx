@@ -4,18 +4,31 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Menu, X, ArrowRight, Phone, MapPin, Sparkles } from 'lucide-react';
 
-const navItems = [
-  { name: 'Home', href: '#hero', id: 'hero' },
+const desktopNavItems = [
   { name: 'About', href: '#about', id: 'about' },
   { name: 'Facilities', href: '#facilities', id: 'facilities' },
   { name: 'Programs', href: '#programs', id: 'programs' },
   { name: 'Membership', href: '#membership', id: 'membership' },
   { name: 'Trainers', href: '#trainers', id: 'trainers' },
   { name: 'Transformations', href: '#transformations', id: 'transformations' },
+  { name: 'Reviews', href: '#testimonials', id: 'testimonials' },
+  { name: 'FAQ', href: '#faq', id: 'faq' },
+];
+
+const mobileNavItems = [
+  { name: 'Home', href: '#hero', id: 'hero' },
+  { name: 'About Story', href: '#about', id: 'about' },
+  { name: 'Luxury Arenas', href: '#facilities', id: 'facilities' },
+  { name: 'Training Disciplines', href: '#programs', id: 'programs' },
+  { name: 'Membership Tiers', href: '#membership', id: 'membership' },
+  { name: 'Master Coaches', href: '#trainers', id: 'trainers' },
+  { name: 'Client Results', href: '#transformations', id: 'transformations' },
+  { name: 'Virtual Tour', href: '#virtual-tour', id: 'virtual-tour' },
   { name: 'Gallery', href: '#gallery', id: 'gallery' },
   { name: 'Testimonials', href: '#testimonials', id: 'testimonials' },
   { name: 'FAQ', href: '#faq', id: 'faq' },
-  { name: 'Contact', href: '#contact', id: 'contact' },
+  { name: 'Editorial Blog', href: '#blog', id: 'blog' },
+  { name: 'Contact & Valet', href: '#contact', id: 'contact' },
 ];
 
 export default function Navbar() {
@@ -26,7 +39,7 @@ export default function Navbar() {
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      setIsScrolled(window.scrollY > 25);
     };
 
     handleScroll();
@@ -52,8 +65,21 @@ export default function Navbar() {
 
     const observer = new IntersectionObserver(handleIntersect, observerOptions);
 
-    navItems.forEach((item) => {
-      const el = document.getElementById(item.id);
+    const observedIds = [
+      'hero',
+      'about',
+      'facilities',
+      'programs',
+      'membership',
+      'trainers',
+      'transformations',
+      'testimonials',
+      'faq',
+      'contact',
+    ];
+
+    observedIds.forEach((id) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
@@ -75,8 +101,8 @@ export default function Navbar() {
   const scrollToSection = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
-    
-    if (href === '#') {
+
+    if (href === '#' || href === '#hero') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -98,23 +124,23 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+        className={`fixed top-0 inset-x-0 w-full z-50 transition-all duration-300 ${
           isScrolled
-            ? 'glass-nav py-3 sm:py-3.5 shadow-[0_10px_30px_rgba(0,0,0,0.8)]'
-            : 'bg-gradient-to-b from-black/90 via-black/50 to-transparent py-5 sm:py-6'
+            ? 'glass-nav py-3 shadow-[0_10px_30px_rgba(0,0,0,0.85)]'
+            : 'bg-gradient-to-b from-black/95 via-black/60 to-transparent py-4 sm:py-5'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Brand Logo */}
           <a
             href="#hero"
             onClick={(e) => scrollToSection(e, '#hero')}
-            className="group flex items-center gap-3 cursor-pointer select-none"
+            className="group flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0"
           >
             {/* Logo Badge Icon */}
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-gradient-to-br from-accent via-accent-dark to-yellow-600 p-[1px] flex items-center justify-center shadow-[0_0_15px_rgba(255,209,0,0.3)] group-hover:shadow-[0_0_25px_rgba(255,209,0,0.6)] transition-all duration-300">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-accent via-accent-dark to-yellow-600 p-[1px] flex items-center justify-center shadow-[0_0_15px_rgba(255,209,0,0.3)] group-hover:shadow-[0_0_25px_rgba(255,209,0,0.6)] transition-all duration-300 flex-shrink-0">
               <div className="w-full h-full bg-black rounded-[7px] flex items-center justify-center">
-                <span className="font-heading text-xl sm:text-2xl text-accent font-black tracking-tighter group-hover:scale-110 transition-transform duration-300">
+                <span className="font-heading text-lg sm:text-xl text-accent font-black tracking-tighter group-hover:scale-110 transition-transform duration-300">
                   MG
                 </span>
               </div>
@@ -122,7 +148,7 @@ export default function Navbar() {
 
             {/* Logo Typography */}
             <div className="flex flex-col">
-              <div className="flex items-center gap-1.5 leading-none">
+              <div className="flex items-center gap-1 leading-none">
                 <span className="font-heading text-2xl sm:text-3xl tracking-wider text-white group-hover:text-accent transition-colors duration-300">
                   MUSCLE
                 </span>
@@ -130,22 +156,22 @@ export default function Navbar() {
                   GARAAGE
                 </span>
               </div>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.35em] uppercase text-gray-400 group-hover:text-accent/80 transition-colors duration-300 -mt-0.5">
-                Luxury Fitness · Motera
+              <span className="text-[8px] sm:text-[9px] tracking-[0.3em] uppercase text-gray-400 group-hover:text-accent/80 transition-colors duration-300 -mt-0.5 font-medium">
+                Motera · Ahmedabad
               </span>
             </div>
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-1.5 lg:gap-2 bg-neutral-900/60 p-1.5 rounded-full border border-white/10 backdrop-blur-md">
-            {navItems.map((item) => {
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 bg-neutral-950/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner">
+            {desktopNavItems.map((item) => {
               const isActive = activeSection === item.id;
               return (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => scrollToSection(e, item.href)}
-                  className={`relative px-3.5 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-[0.18em] transition-all duration-300 ${
+                  className={`px-3 xl:px-3.5 py-1.5 rounded-full text-[11px] xl:text-xs font-semibold uppercase tracking-[0.14em] transition-all duration-300 whitespace-nowrap ${
                     isActive
                       ? 'text-black bg-accent font-bold shadow-[0_0_15px_rgba(255,209,0,0.5)]'
                       : 'text-gray-300 hover:text-white hover:bg-white/5'
@@ -157,43 +183,22 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Compact Links for Medium Laptops (lg:flex, xl:hidden) */}
-          <nav className="hidden lg:flex xl:hidden items-center gap-1 bg-neutral-900/60 p-1 rounded-full border border-white/10 backdrop-blur-md">
-            {navItems.slice(0, 7).map((item) => {
-              const isActive = activeSection === item.id;
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => scrollToSection(e, item.href)}
-                  className={`relative px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider transition-all duration-300 ${
-                    isActive
-                      ? 'text-black bg-accent font-bold'
-                      : 'text-gray-300 hover:text-white'
-                  }`}
-                >
-                  {item.name}
-                </a>
-              );
-            })}
-          </nav>
-
           {/* Desktop Right CTA Action */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3 xl:gap-4 flex-shrink-0">
             <a
               href="tel:+919876543210"
-              className="flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-accent transition-colors"
+              className="hidden 2xl:flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-accent transition-colors font-mono"
             >
               <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent">
                 <Phone className="w-3.5 h-3.5" />
               </div>
-              <span className="font-mono text-xs hidden 2xl:inline tracking-wider">+91 98765 43210</span>
+              <span>+91 98765 43210</span>
             </a>
 
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, '#contact')}
-              className="group relative inline-flex items-center gap-2 overflow-hidden bg-accent px-5 sm:px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,0,0.5)] active:scale-95"
+              className="group relative inline-flex items-center gap-2 overflow-hidden bg-accent px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,0,0.5)] active:scale-95 whitespace-nowrap shadow-md"
             >
               <Sparkles className="w-3.5 h-3.5 text-black" />
               <span>Book Free Trial</span>
@@ -201,14 +206,14 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <div className="flex items-center gap-2 lg:hidden">
+          {/* Mobile Right Controls */}
+          <div className="flex items-center gap-2.5 lg:hidden">
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, '#contact')}
               className="bg-accent text-black px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(255,209,0,0.4)]"
             >
-              Free Trial
+              Free Pass
             </a>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -255,22 +260,22 @@ export default function Navbar() {
         </div>
 
         {/* Navigation Links Grid */}
-        <nav className="my-auto py-6 grid grid-cols-2 gap-3 overflow-y-auto max-h-[60vh] no-scrollbar">
-          {navItems.map((item, idx) => {
+        <nav className="my-auto py-6 grid grid-cols-2 gap-2.5 overflow-y-auto max-h-[60vh] no-scrollbar">
+          {mobileNavItems.map((item, idx) => {
             const isActive = activeSection === item.id;
             return (
               <a
                 key={item.name}
                 href={item.href}
                 onClick={(e) => scrollToSection(e, item.href)}
-                style={{ animationDelay: `${idx * 40}ms` }}
+                style={{ animationDelay: `${idx * 30}ms` }}
                 className={`p-3 rounded-xl border transition-all duration-300 flex items-center justify-between ${
                   isActive
-                    ? 'bg-accent/15 border-accent text-accent'
+                    ? 'bg-accent/15 border-accent text-accent font-bold'
                     : 'bg-white/[0.03] border-white/5 text-gray-300 hover:border-white/20 hover:text-white'
                 }`}
               >
-                <span className="font-heading text-lg sm:text-xl uppercase tracking-wider">
+                <span className="font-heading text-base sm:text-lg uppercase tracking-wider">
                   {item.name}
                 </span>
                 <ArrowRight className={`w-3.5 h-3.5 ${isActive ? 'text-accent' : 'text-gray-600'}`} />
@@ -291,7 +296,7 @@ export default function Navbar() {
           <a
             href="#contact"
             onClick={(e) => scrollToSection(e, '#contact')}
-            className="w-full py-3.5 bg-accent text-black font-heading text-lg uppercase tracking-widest text-center rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_0_20px_rgba(255,209,0,0.4)]"
+            className="w-full py-3.5 bg-accent text-black font-heading text-lg uppercase tracking-widest text-center rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-all shadow-[0_0_20px_rgba(255,209,0,0.4)] font-bold"
           >
             <Sparkles className="w-4 h-4" /> Book Complimentary 1-Day Trial
           </a>

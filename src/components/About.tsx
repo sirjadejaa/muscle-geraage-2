@@ -30,22 +30,26 @@ export default function About() {
     gsap.from(contentRef.current, {
       opacity: 0,
       x: -40,
+      filter: 'blur(6px)',
       duration: 0.9,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
 
     gsap.from(imageRef.current, {
       opacity: 0,
-      scale: 0.95,
+      scale: 0.94,
+      filter: 'blur(8px)',
       duration: 0.9,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
   }, { scope: sectionRef });
@@ -54,13 +58,13 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative bg-black py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 overflow-hidden z-30 border-t border-white/5"
+      className="relative bg-black py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden z-30 border-t border-white/5"
     >
       {/* Ambient background glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,209,0,0.05)_0%,transparent_70%)] pointer-events-none" />
 
       {/* Typographic Welcome Header */}
-      <div className="w-full max-w-7xl mx-auto mb-16 sm:mb-24 text-center">
+      <div className="w-full max-w-7xl mx-auto mb-12 sm:mb-16 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4">
           <Sparkles className="w-3.5 h-3.5 text-accent" />
           <span className="text-[10px] sm:text-xs text-gray-400 tracking-[0.4em] uppercase font-bold">
@@ -76,7 +80,7 @@ export default function About() {
         </span>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         {/* Left Side: Content & Highlights */}
         <div ref={contentRef} className="lg:col-span-6 flex flex-col justify-center">
           <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-3">
@@ -87,70 +91,77 @@ export default function About() {
             <span className="text-accent">LIMITS OF HUMAN FITNESS</span>
           </h3>
 
-          <p className="font-body text-sm sm:text-base text-gray-300 mb-6 leading-relaxed">
+          <p className="font-body text-sm sm:text-base text-gray-300 mb-4 sm:mb-6 leading-relaxed">
             Muscle Garaage is Ahmedabad&apos;s premier luxury fitness club. Born from the philosophy that physical transformation requires the ultimate environment, we combine cutting-edge Italian biomechanical technology with upscale concierge hospitality.
           </p>
-          <p className="font-body text-sm sm:text-base text-gray-400 mb-8 leading-relaxed">
+          <p className="font-body text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 leading-relaxed">
             Spanning an expansive 35,000 square feet in Motera, our facility features heavy strength arenas, Rogue CrossFit rigs, a heated indoor swimming pool, eucalyptus steam rooms, Finnish saunas, and cryo recovery plunge baths.
           </p>
 
           {/* Highlights Checklist */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8 sm:mb-10">
             {keyHighlights.map((item, idx) => (
               <div key={idx} className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                <span className="text-xs text-gray-300 font-medium leading-snug">{item}</span>
+                <span className="font-body text-xs sm:text-sm text-gray-300 font-medium leading-tight">
+                  {item}
+                </span>
               </div>
             ))}
           </div>
 
-          {/* Quick CTA */}
-          <div className="flex items-center gap-6">
+          {/* CTA Action & Panatta Badge */}
+          <div className="flex flex-wrap items-center gap-6 pt-2">
             <a
               href="#facilities"
-              className="inline-flex items-center gap-2 bg-accent text-black font-heading text-lg uppercase tracking-wider px-6 py-3 rounded-full font-bold hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,0,0.5)] transition-all duration-300"
+              className="inline-flex items-center gap-2 bg-accent text-black font-heading text-base uppercase tracking-widest px-8 py-3.5 rounded-full font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(255,209,0,0.3)] hover:scale-105 active:scale-95"
             >
               <span>Explore Facilities</span>
               <ArrowRight className="w-4 h-4" />
             </a>
 
-            <div className="flex flex-col">
-              <span className="font-heading text-2xl text-white leading-none">35,000 SQ FT</span>
-              <span className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Total Floor Area</span>
+            <div className="flex items-center gap-3 border-l border-white/15 pl-6">
+              <div className="w-10 h-10 rounded-full bg-neutral-900 border border-accent/40 flex items-center justify-center text-accent">
+                <Award className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-white uppercase tracking-wider">
+                  Panatta Certified
+                </span>
+                <span className="text-[10px] text-gray-400">Official Italian Biomechanics</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Right Side: Showcase Image Stack */}
+        {/* Right Side: Dual Visual Showcase Card */}
         <div ref={imageRef} className="lg:col-span-6 relative">
-          <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden border border-white/10 group shadow-2xl">
+          <div className="relative z-10 aspect-[4/3] rounded-3xl overflow-hidden border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] group">
             <img
-              src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1400"
-              alt="Muscle Garaage Luxury Gym Interior"
-              className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
+              src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1200"
+              alt="Muscle Garaage Interior Arena"
+              className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out brightness-90"
               loading="lazy"
               decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
 
-            {/* Floating Luxury Quality Badge */}
-            <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-accent text-black flex items-center justify-center font-bold">
-                  <Award className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="font-heading text-lg text-white uppercase tracking-wider block">
-                    Panatta Certified
-                  </span>
-                  <span className="text-[10px] text-gray-400 uppercase tracking-widest block">
-                    Zero Joint Stress Biomechanics
-                  </span>
-                </div>
+            {/* Floating Experience Badge */}
+            <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-between">
+              <div>
+                <span className="text-[10px] text-accent uppercase font-bold tracking-widest block">
+                  MOTERA PREMIER SANCTUARY
+                </span>
+                <span className="font-heading text-lg sm:text-xl text-white uppercase tracking-wider">
+                  35,000 SQ FT OF PURE LUXURY
+                </span>
               </div>
-              <span className="text-xs font-mono text-accent font-bold">100% Calibrated</span>
+              <span className="text-accent font-heading text-2xl sm:text-3xl">4.9 ★</span>
             </div>
           </div>
+
+          {/* Decorative Gold Backing Accent */}
+          <div className="absolute -inset-2 bg-gradient-to-r from-accent/20 to-transparent rounded-3xl -z-10 blur-xl opacity-50" />
         </div>
       </div>
     </section>

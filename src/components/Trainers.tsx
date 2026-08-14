@@ -57,13 +57,16 @@ export default function Trainers() {
 
     gsap.from('.trainer-card', {
       opacity: 0,
-      y: 40,
-      duration: 0.8,
-      stagger: 0.12,
+      y: 50,
+      scale: 0.94,
+      filter: 'blur(8px)',
+      duration: 0.85,
+      stagger: 0.1,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
   }, { scope: containerRef });
@@ -72,14 +75,14 @@ export default function Trainers() {
     <section
       ref={containerRef}
       id="trainers"
-      className="relative bg-neutral-950 py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-neutral-950 py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-accent/3 rounded-full filter blur-[160px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="mb-14 sm:mb-20 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mb-12 sm:mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4">
               <Sparkles className="w-3.5 h-3.5 text-accent" />
@@ -87,7 +90,7 @@ export default function Trainers() {
                 THE ELITE PANEL
               </span>
             </div>
-            <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none">
+            <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl tracking-tight text-white uppercase leading-none">
               MEET OUR <br />
               <span className="gold-gradient-text">MASTER COACHES</span>
             </h2>
