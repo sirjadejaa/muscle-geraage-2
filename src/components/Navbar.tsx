@@ -10,7 +10,7 @@ const desktopNavItems = [
   { name: 'Programs', href: '#programs', id: 'programs' },
   { name: 'Membership', href: '#membership', id: 'membership' },
   { name: 'Trainers', href: '#trainers', id: 'trainers' },
-  { name: 'Transformations', href: '#transformations', id: 'transformations' },
+  { name: 'Results', href: '#transformations', id: 'transformations' },
   { name: 'Reviews', href: '#testimonials', id: 'testimonials' },
   { name: 'FAQ', href: '#faq', id: 'faq' },
 ];
@@ -124,23 +124,30 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 inset-x-0 w-full z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-auto ${
           isScrolled
-            ? 'glass-nav py-3 shadow-[0_10px_30px_rgba(0,0,0,0.85)]'
-            : 'bg-gradient-to-b from-black/95 via-black/60 to-transparent py-4 sm:py-5'
+            ? 'glass-nav py-2.5 sm:py-3 shadow-[0_10px_30px_rgba(0,0,0,0.85)]'
+            : 'bg-gradient-to-b from-black/95 via-black/70 to-transparent py-3 sm:py-4'
         }`}
+        style={{
+          left: 0,
+          right: 0,
+          width: '100%',
+          maxWidth: '100vw',
+          boxSizing: 'border-box',
+        }}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4">
           {/* Brand Logo */}
           <a
             href="#hero"
             onClick={(e) => scrollToSection(e, '#hero')}
-            className="group flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0"
+            className="group flex items-center gap-2 sm:gap-3 cursor-pointer select-none flex-shrink-0"
           >
             {/* Logo Badge Icon */}
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-accent via-accent-dark to-yellow-600 p-[1px] flex items-center justify-center shadow-[0_0_15px_rgba(255,209,0,0.3)] group-hover:shadow-[0_0_25px_rgba(255,209,0,0.6)] transition-all duration-300 flex-shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-accent via-accent-dark to-yellow-600 p-[1px] flex items-center justify-center shadow-[0_0_15px_rgba(255,209,0,0.3)] group-hover:shadow-[0_0_25px_rgba(255,209,0,0.6)] transition-all duration-300 flex-shrink-0">
               <div className="w-full h-full bg-black rounded-[7px] flex items-center justify-center">
-                <span className="font-heading text-lg sm:text-xl text-accent font-black tracking-tighter group-hover:scale-110 transition-transform duration-300">
+                <span className="font-heading text-base sm:text-lg md:text-xl text-accent font-black tracking-tighter group-hover:scale-110 transition-transform duration-300">
                   MG
                 </span>
               </div>
@@ -149,21 +156,21 @@ export default function Navbar() {
             {/* Logo Typography */}
             <div className="flex flex-col">
               <div className="flex items-center gap-1 leading-none">
-                <span className="font-heading text-2xl sm:text-3xl tracking-wider text-white group-hover:text-accent transition-colors duration-300">
+                <span className="font-heading text-xl sm:text-2xl md:text-3xl tracking-wider text-white group-hover:text-accent transition-colors duration-300">
                   MUSCLE
                 </span>
-                <span className="font-heading text-2xl sm:text-3xl tracking-wider text-accent group-hover:text-white transition-colors duration-300">
+                <span className="font-heading text-xl sm:text-2xl md:text-3xl tracking-wider text-accent group-hover:text-white transition-colors duration-300">
                   GARAAGE
                 </span>
               </div>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.3em] uppercase text-gray-400 group-hover:text-accent/80 transition-colors duration-300 -mt-0.5 font-medium">
+              <span className="text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.25em] sm:tracking-[0.3em] uppercase text-gray-400 group-hover:text-accent/80 transition-colors duration-300 -mt-0.5 font-medium">
                 Motera · Ahmedabad
               </span>
             </div>
           </a>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 bg-neutral-950/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner">
+          {/* Desktop Navigation Links (xl:flex for full list, lg:flex for compact) */}
+          <nav className="hidden xl:flex items-center gap-1 bg-neutral-950/80 p-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-inner flex-shrink">
             {desktopNavItems.map((item) => {
               const isActive = activeSection === item.id;
               return (
@@ -171,7 +178,7 @@ export default function Navbar() {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => scrollToSection(e, item.href)}
-                  className={`px-3 xl:px-3.5 py-1.5 rounded-full text-[11px] xl:text-xs font-semibold uppercase tracking-[0.14em] transition-all duration-300 whitespace-nowrap ${
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.12em] transition-all duration-300 whitespace-nowrap ${
                     isActive
                       ? 'text-black bg-accent font-bold shadow-[0_0_15px_rgba(255,209,0,0.5)]'
                       : 'text-gray-300 hover:text-white hover:bg-white/5'
@@ -183,8 +190,29 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Desktop Right CTA Action */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-4 flex-shrink-0">
+          {/* Compact Links for Medium Screens (lg:flex, xl:hidden) */}
+          <nav className="hidden lg:flex xl:hidden items-center gap-1 bg-neutral-950/80 p-1 rounded-full border border-white/10 backdrop-blur-md">
+            {desktopNavItems.slice(0, 5).map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => scrollToSection(e, item.href)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
+                    isActive
+                      ? 'text-black bg-accent font-bold'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  {item.name}
+                </a>
+              );
+            })}
+          </nav>
+
+          {/* Right CTA Action */}
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
             <a
               href="tel:+919876543210"
               className="hidden 2xl:flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-accent transition-colors font-mono"
@@ -198,7 +226,7 @@ export default function Navbar() {
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, '#contact')}
-              className="group relative inline-flex items-center gap-2 overflow-hidden bg-accent px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,0,0.5)] active:scale-95 whitespace-nowrap shadow-md"
+              className="group relative inline-flex items-center gap-2 overflow-hidden bg-accent px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_rgba(255,209,0,0.5)] active:scale-95 whitespace-nowrap shadow-md"
             >
               <Sparkles className="w-3.5 h-3.5 text-black" />
               <span>Book Free Trial</span>
@@ -206,18 +234,18 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile Right Controls */}
-          <div className="flex items-center gap-2.5 lg:hidden">
+          {/* Mobile Right Menu Button */}
+          <div className="flex items-center gap-2 lg:hidden flex-shrink-0">
             <a
               href="#contact"
               onClick={(e) => scrollToSection(e, '#contact')}
-              className="bg-accent text-black px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(255,209,0,0.4)]"
+              className="bg-accent text-black px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(255,209,0,0.4)] whitespace-nowrap"
             >
               Free Pass
             </a>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:text-accent hover:border-accent transition-colors focus:outline-none"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:text-accent hover:border-accent transition-colors focus:outline-none flex-shrink-0"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -244,7 +272,7 @@ export default function Navbar() {
               <span className="font-heading text-xl text-white tracking-wider">
                 MUSCLE <span className="text-accent">GARAAGE</span>
               </span>
-              <span className="text-[8px] text-gray-500 uppercase tracking-widest block">
+              <span className="text-[8px] text-gray-500 uppercase tracking-widest block font-medium">
                 Luxury Fitness Sanctuary
               </span>
             </div>
@@ -260,7 +288,7 @@ export default function Navbar() {
         </div>
 
         {/* Navigation Links Grid */}
-        <nav className="my-auto py-6 grid grid-cols-2 gap-2.5 overflow-y-auto max-h-[60vh] no-scrollbar">
+        <nav className="my-auto py-4 grid grid-cols-2 gap-2.5 overflow-y-auto max-h-[60vh] no-scrollbar">
           {mobileNavItems.map((item, idx) => {
             const isActive = activeSection === item.id;
             return (
@@ -268,14 +296,14 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 onClick={(e) => scrollToSection(e, item.href)}
-                style={{ animationDelay: `${idx * 30}ms` }}
+                style={{ animationDelay: `${idx * 25}ms` }}
                 className={`p-3 rounded-xl border transition-all duration-300 flex items-center justify-between ${
                   isActive
                     ? 'bg-accent/15 border-accent text-accent font-bold'
                     : 'bg-white/[0.03] border-white/5 text-gray-300 hover:border-white/20 hover:text-white'
                 }`}
               >
-                <span className="font-heading text-base sm:text-lg uppercase tracking-wider">
+                <span className="font-heading text-sm sm:text-base uppercase tracking-wider">
                   {item.name}
                 </span>
                 <ArrowRight className={`w-3.5 h-3.5 ${isActive ? 'text-accent' : 'text-gray-600'}`} />

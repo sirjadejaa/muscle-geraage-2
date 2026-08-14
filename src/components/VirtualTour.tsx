@@ -22,13 +22,15 @@ export default function VirtualTour() {
 
     gsap.from('.tour-player-wrap', {
       opacity: 0,
-      scale: 0.95,
+      scale: 0.94,
       y: 40,
+      filter: 'blur(8px)',
       duration: 0.9,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
   }, { scope: containerRef });
@@ -79,21 +81,21 @@ export default function VirtualTour() {
     <section
       ref={containerRef}
       id="virtual-tour"
-      className="relative bg-neutral-950 py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-neutral-950 py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-accent/2 rounded-full filter blur-[180px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4">
             <Film className="w-3.5 h-3.5 text-accent" />
             <span className="text-[10px] sm:text-xs text-accent font-bold tracking-[0.4em] uppercase">
               CINEMATIC WALKTHROUGH
             </span>
           </div>
-          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-6">
+          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-4 sm:mb-6">
             VIRTUAL <br />
             <span className="gold-gradient-text">SANCTUARY TOUR</span>
           </h2>
@@ -107,6 +109,7 @@ export default function VirtualTour() {
           <video
             ref={videoRef}
             src="https://assets.mixkit.co/videos/preview/mixkit-man-training-with-dumbbells-in-a-dark-gym-43093-large.mp4"
+            poster="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600"
             className="w-full h-full object-cover cursor-pointer"
             loop
             muted={isMuted}
@@ -143,7 +146,7 @@ export default function VirtualTour() {
 
             {/* Controls Row */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <button
                   onClick={togglePlay}
                   className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white hover:text-accent hover:bg-white/20 transition-all"

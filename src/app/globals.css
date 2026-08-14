@@ -67,12 +67,23 @@ html.lenis body {
 }
 
 /* Base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   background-color: #000000;
   color: #ffffff;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
@@ -106,7 +117,7 @@ body {
 }
 
 .glass-nav {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);

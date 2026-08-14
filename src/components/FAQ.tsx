@@ -96,17 +96,21 @@ export default function FAQ() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.from('.faq-header', {
+    gsap.from('.faq-card-item', {
       opacity: 0,
-      y: 30,
-      duration: 0.8,
+      y: 35,
+      scale: 0.96,
+      filter: 'blur(6px)',
+      duration: 0.7,
+      stagger: 0.05,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 75%',
+        once: true,
       },
     });
-  }, { scope: containerRef });
+  }, { dependencies: [activeCategory, searchQuery], scope: containerRef });
 
   const filteredFaqs = useMemo(() => {
     return faqs.filter((faq) => {
@@ -126,21 +130,21 @@ export default function FAQ() {
     <section
       ref={containerRef}
       id="faq"
-      className="relative bg-black py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-black py-20 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute top-1/2 right-1/4 w-[600px] h-[600px] bg-accent/2 rounded-full filter blur-[180px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
-        <div className="faq-header text-center mb-12 sm:mb-16">
+        <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4">
             <HelpCircle className="w-3.5 h-3.5 text-accent" />
             <span className="text-[10px] sm:text-xs text-accent font-bold tracking-[0.4em] uppercase">
               CLEAR ANSWERS
             </span>
           </div>
-          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-6">
+          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none mb-4 sm:mb-6">
             FREQUENTLY ASKED <br />
             <span className="gold-gradient-text">QUESTIONS</span>
           </h2>
@@ -150,7 +154,7 @@ export default function FAQ() {
         </div>
 
         {/* Search Bar & Category Filter */}
-        <div className="flex flex-col gap-4 mb-10">
+        <div className="flex flex-col gap-4 mb-8 sm:mb-10">
           {/* Search Input */}
           <div className="relative w-full">
             <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -199,56 +203,57 @@ export default function FAQ() {
                   setSearchQuery('');
                   setActiveCategory('All');
                 }}
-                className="text-xs text-accent font-bold uppercase tracking-wider underline"
+                className="text-xs text-accent font-semibold underline"
               >
-                Reset Search
+                Reset Search Filters
               </button>
             </div>
           ) : (
-            filteredFaqs.map((faq, idx) => {
-              const isOpen = openIdx === idx;
+            filteredFaqs.map((faq, index) => {
+              const isOpen = openIdx === index;
               return (
                 <div
-                  key={idx}
-                  className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                  key={index}
+                  className={`faq-card-item rounded-2xl border transition-all duration-300 overflow-hidden ${
                     isOpen
-                      ? 'bg-neutral-950 border-accent/60 shadow-[0_0_20px_rgba(255,209,0,0.1)]'
-                      : 'bg-neutral-950/60 border-white/10 hover:border-white/25'
+                      ? 'bg-neutral-950/90 border-accent/40 shadow-[0_0_25px_rgba(255,209,0,0.08)]'
+                      : 'bg-neutral-950/50 border-white/10 hover:border-white/20'
                   }`}
                 >
                   <button
-                    onClick={() => toggleFAQ(idx)}
-                    className="w-full py-5 px-6 sm:px-8 flex items-center justify-between text-left focus:outline-none gap-4 group"
+                    onClick={() => toggleFAQ(index)}
+                    className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 focus:outline-none"
+                    aria-expanded={isOpen}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-accent font-bold bg-accent/10 px-2.5 py-0.5 rounded border border-accent/20 w-fit">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] uppercase font-bold tracking-widest text-accent mb-1">
                         {faq.category}
                       </span>
-                      <span className="font-heading text-xl sm:text-2xl text-white uppercase tracking-wider group-hover:text-accent transition-colors">
+                      <h3 className="font-heading text-lg sm:text-xl md:text-2xl uppercase tracking-wider text-white">
                         {faq.question}
-                      </span>
+                      </h3>
                     </div>
 
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center border flex-shrink-0 transition-all duration-300 ${
+                      className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                         isOpen
-                          ? 'bg-accent text-black border-accent rotate-180'
-                          : 'bg-white/5 border-white/15 text-gray-400 group-hover:text-white'
+                          ? 'bg-accent text-black rotate-180 shadow-[0_0_15px_rgba(255,209,0,0.4)]'
+                          : 'bg-white/5 text-gray-400 hover:text-white'
                       }`}
                     >
                       {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                     </div>
                   </button>
 
-                  {/* Animated Answer Body */}
+                  {/* Collapsible Answer Panel */}
                   <div
-                    className={`transition-all duration-300 ease-in-out overflow-hidden px-6 sm:px-8 ${
-                      isOpen ? 'max-h-96 pb-6 pt-1 opacity-100 border-t border-white/10' : 'max-h-0 opacity-0'
+                    className={`transition-all duration-300 ease-out overflow-hidden ${
+                      isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
-                    <p className="font-body text-sm sm:text-base text-gray-300 leading-relaxed">
+                    <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-white/5 font-body">
                       {faq.answer}
-                    </p>
+                    </div>
                   </div>
                 </div>
               );
@@ -256,22 +261,23 @@ export default function FAQ() {
           )}
         </div>
 
-        {/* Bottom Help Note */}
-        <div className="mt-12 text-center p-6 rounded-2xl bg-neutral-950 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Still Have Questions CTA */}
+        <div className="mt-10 sm:mt-12 p-6 sm:p-8 rounded-3xl bg-neutral-950 border border-white/10 text-center flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-left">
-            <span className="font-heading text-xl text-white uppercase tracking-wider block">
-              Still have questions?
-            </span>
-            <span className="text-xs text-gray-400">
-              Speak directly with our Motera fitness concierge team.
-            </span>
+            <h4 className="font-heading text-2xl text-white uppercase tracking-wider mb-1">
+              Still Have Questions?
+            </h4>
+            <p className="text-xs text-gray-400">
+              Our concierge team is available 24/7 on WhatsApp and phone for membership inquiries.
+            </p>
           </div>
+
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 bg-accent text-black font-heading text-sm uppercase tracking-wider px-6 py-2.5 rounded-full font-bold hover:bg-white transition-all shadow"
+            className="inline-flex items-center gap-2 bg-accent text-black font-heading text-sm uppercase tracking-wider px-6 py-3 rounded-full font-bold hover:bg-white transition-all shadow-[0_0_15px_rgba(255,209,0,0.3)] flex-shrink-0"
           >
             <span>Ask Concierge</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-4 h-4" />
           </a>
         </div>
       </div>
