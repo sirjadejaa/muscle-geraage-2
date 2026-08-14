@@ -1,146 +1,190 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, Sparkles, CheckCircle } from 'lucide-react';
 
 const facilities = [
   {
+    id: 'strength',
     name: 'Strength Zone',
-    tagline: 'Custom biomechanical isolation lines',
-    description: 'Equipped with bespoke Panatta and Hammer Strength lines, including specialized barbells, dumbbells up to 80kg, and dedicated heavy-lifting platforms.',
+    tagline: 'Custom Panatta & Hammer Strength Biomechanics',
+    specs: 'Dumbbells up to 80kg · 4 Deadlift Platforms · Custom Pulleys',
+    description:
+      'Engineered with bespoke Panatta Italy and Hammer Strength lines, custom calibrated barbells, heavy-duty power racks, and precision cable systems to isolate muscle fibers safely.',
     image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1600',
   },
   {
+    id: 'cardio',
     name: 'Cardio Arena',
-    tagline: 'High-performance calorie conditioning',
-    description: 'Features Technogym Run Personal treadmills, skill-mills, air-bikes, and cross-trainers configured with telemetry systems to track performance metrics.',
+    tagline: 'Technogym Run Personal & Metric Telemetry',
+    specs: 'Live VO2 Tracking · Skill-Mills · StairMasters · Rowers',
+    description:
+      'Features Italian Technogym Run Personal treadmills, curve skill-mills, Concept2 rowers, and air-bikes equipped with real-time biometric telemetry to optimize cardiovascular efficiency.',
     image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1600',
   },
   {
-    name: 'CrossFit Box',
-    tagline: 'High-intensity functional arena',
-    description: 'A bespoke 5,000 sq ft arena fully outfitted with Rogue fitness rigs, climbing ropes, sled tracks, kettlebells, and bumper plates.',
+    id: 'crossfit',
+    name: 'Rogue CrossFit Box',
+    tagline: '5,000 Sq Ft Functional Rig & Sled Turf',
+    specs: 'Olympic Plates · Climbing Ropes · Sled Tracks · Gymnastic Rings',
+    description:
+      'A dedicated 5,000 sq ft functional arena fully outfitted with official Rogue fitness rigs, competition bumper plates, climbing ropes, heavy tire flips, and turf sprint tracks.',
     image: 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc?q=80&w=1600',
   },
   {
-    name: 'Swimming Pool',
-    tagline: 'Temperature-controlled lap luxury',
-    description: 'An indoor, semi-Olympic size pool heated precisely for recovery laps, featuring lounge decks and direct access to steam facilities.',
+    id: 'pool',
+    name: 'Semi-Olympic Pool',
+    tagline: 'Indoor Heated 25m Lap Pool & Lounge Deck',
+    specs: 'Temperature-Controlled (28°C) · 4 Lap Lanes · Underwater Audio',
+    description:
+      'A crystal-clear, climate-controlled 25-meter lap pool maintained at a soothing 28°C. Perfect for low-impact cardio conditioning, swimming drills, and active recovery.',
     image: 'https://images.unsplash.com/photo-1519766304817-4f37bda74a27?q=80&w=1600',
   },
   {
-    name: 'Recovery Suite & Ice Bath',
-    tagline: 'Cryo-conditioning and muscle repair',
-    description: 'Equipped with cold plunge ice baths (3-5°C), Finnish dry saunas, eucalyptus steam cabins, and specialized sports physiotherapy recovery tables.',
+    id: 'recovery',
+    name: 'Cryo & Recovery Suite',
+    tagline: 'Ice Baths (3-5°C), Finnish Sauna & Steam',
+    specs: 'Cold Plunge Tubs · Finnish Dry Sauna · Eucalyptus Steam Cabin',
+    description:
+      'Accelerate recovery with dedicated 3-5°C cryotherapy ice plunge tubs, cedarwood Finnish dry saunas, and eucalyptus-infused steam cabins for rapid tissue repair.',
     image: 'https://images.unsplash.com/photo-1594178543599-ced7481ec651?q=80&w=1600',
   },
   {
+    id: 'yoga',
     name: 'Mind-Body Yoga Studio',
-    tagline: 'Serene wellness sanctuary',
-    description: 'An acoustically isolated, glass-walled studio with soft bamboo flooring, dedicated to classical Hatha, Vinyasa, and power yoga sessions.',
+    tagline: 'Acoustically Isolated Wellness Sanctuary',
+    specs: 'Bamboo Wood Flooring · Sound Healing · Reformer Pilates',
+    description:
+      'A peaceful, glass-enclosed studio with soft bamboo flooring, dedicated to classical Hatha, Vinyasa, aerial yoga, and mindfulness breathwork sessions.',
     image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=1600',
   },
   {
-    name: 'Executive Locker Rooms',
-    tagline: 'Premium grooming amenities',
-    description: 'Equipped with digital lockers, luxury bath products, rainforest showers, private dressing areas, and complimentary vanity amenities.',
+    id: 'lockers',
+    name: 'Executive Locker Suites',
+    tagline: 'Digital Keypad Lockers & Rainforest Showers',
+    specs: 'Private Showers · Vanity Grooming Stations · Steam Access',
+    description:
+      'Private executive dressing suites equipped with digital keypad locks, plush bath sheets, rainforest shower heads, and luxury organic grooming products.',
     image: 'https://images.unsplash.com/photo-1562771242-a02d9090c90c?q=80&w=1600',
   },
 ];
 
 export default function Facilities() {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(0);
+  const [selectedIdx, setSelectedIdx] = useState<number>(0);
 
   return (
     <section
       id="facilities"
-      className="relative bg-black min-h-screen py-24 md:py-32 px-6 flex items-center overflow-hidden z-30"
+      className="relative bg-black min-h-screen py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 flex items-center overflow-hidden z-30 border-t border-white/5"
     >
-      {/* Background Images Wrapper */}
+      {/* Background Image Showcase with Transition */}
       <div className="absolute inset-0 w-full h-full z-0">
         {facilities.map((fac, idx) => (
           <div
-            key={idx}
+            key={fac.id}
             className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000 ease-out ${
-              hoveredIdx === idx ? 'opacity-30 scale-105 filter blur-[1px]' : 'opacity-0 scale-100'
+              selectedIdx === idx ? 'opacity-35 scale-105 filter brightness-90' : 'opacity-0 scale-100'
             }`}
             style={{ backgroundImage: `url(${fac.image})` }}
           />
         ))}
-        {/* Dark radial glow to ensure typography remains legible */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/40" />
+        {/* Dark Gradients to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
       </div>
 
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
-        {/* Left Side: List */}
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative z-10">
+        {/* Left Side: Facility Selector List */}
         <div className="lg:col-span-7 flex flex-col justify-center">
-          <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-6">
-            FACILITIES SHOWCASE
-          </span>
-          <h2 className="font-heading text-5xl sm:text-7xl tracking-tight text-white mb-10 uppercase leading-none">
-            THE WORLD-CLASS <br />
-            <span className="text-accent">ARENAS</span>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 w-fit mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
+            <span className="text-[10px] sm:text-xs text-accent font-bold tracking-[0.4em] uppercase">
+              WORLD-CLASS INFRASTRUCTURE
+            </span>
+          </div>
+
+          <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl tracking-tight text-white mb-8 sm:mb-10 uppercase leading-none">
+            THE LUXURY <br />
+            <span className="gold-gradient-text">TRAINING ARENAS</span>
           </h2>
 
+          {/* Interactive Arena Items */}
           <div className="flex flex-col gap-2">
-            {facilities.map((fac, idx) => (
-              <div
-                key={idx}
-                onMouseEnter={() => setHoveredIdx(idx)}
-                className="py-4 border-b border-white/10 flex items-center justify-between group transition-all duration-300"
-              >
-                <div className="flex flex-col">
-                  <button
-                    className={`font-heading text-3xl sm:text-4xl md:text-5xl uppercase tracking-wider text-left transition-colors duration-300 ${
-                      hoveredIdx === idx ? 'text-accent' : 'text-gray-400 group-hover:text-white'
-                    }`}
-                  >
-                    {fac.name}
-                  </button>
-                  <span
-                    className={`font-body text-xs text-gray-500 uppercase tracking-widest mt-1 transition-opacity duration-300 ${
-                      hoveredIdx === idx ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                    }`}
-                  >
-                    {fac.tagline}
-                  </span>
-                </div>
-                <ChevronRight
-                  className={`w-6 h-6 transition-all duration-300 ${
-                    hoveredIdx === idx ? 'text-accent translate-x-2' : 'text-gray-600 group-hover:text-white'
+            {facilities.map((fac, idx) => {
+              const isSelected = selectedIdx === idx;
+              return (
+                <button
+                  key={fac.id}
+                  onClick={() => setSelectedIdx(idx)}
+                  onMouseEnter={() => setSelectedIdx(idx)}
+                  className={`w-full py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl text-left border transition-all duration-300 flex items-center justify-between group ${
+                    isSelected
+                      ? 'bg-neutral-900/80 border-accent text-accent shadow-[0_0_20px_rgba(255,209,0,0.15)]'
+                      : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/20 hover:text-white'
                   }`}
-                />
-              </div>
-            ))}
+                >
+                  <div className="flex flex-col">
+                    <span className="font-heading text-2xl sm:text-3xl md:text-4xl uppercase tracking-wider leading-none">
+                      {fac.name}
+                    </span>
+                    <span className="text-[11px] sm:text-xs text-gray-400 uppercase tracking-wider font-semibold mt-1">
+                      {fac.tagline}
+                    </span>
+                  </div>
+
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    isSelected ? 'bg-accent text-black translate-x-1' : 'bg-white/5 text-gray-500 group-hover:text-white'
+                  }`}>
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Right Side: Dynamic Content Card */}
+        {/* Right Side: Active Arena Feature Card */}
         <div className="lg:col-span-5 flex flex-col justify-center">
-          <div className="glass-panel p-8 md:p-12 relative overflow-hidden transition-all duration-500 hover:border-accent/30 min-h-[300px] flex flex-col justify-between">
-            {/* Border glow */}
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-accent to-transparent" />
-            
-            {hoveredIdx !== null && (
-              <div className="flex flex-col justify-between h-full animate-fade-in">
-                <div>
-                  <span className="font-heading text-lg text-accent uppercase tracking-wider block mb-2">
-                    {facilities[hoveredIdx].tagline}
-                  </span>
-                  <p className="font-body text-sm text-gray-300 leading-relaxed">
-                    {facilities[hoveredIdx].description}
-                  </p>
-                </div>
-                <div className="mt-8 border-t border-white/10 pt-6">
-                  <span className="text-[10px] text-gray-500 uppercase tracking-[0.2em] block mb-1">
-                    ACCESS TIER
-                  </span>
-                  <span className="font-heading text-xl text-white uppercase tracking-widest">
-                    ALL MEMBERSHIP PLANS
-                  </span>
-                </div>
+          <div className="glass-panel p-6 sm:p-8 md:p-10 rounded-2xl relative overflow-hidden flex flex-col justify-between border-accent/30 shadow-2xl">
+            {/* Top Accent line */}
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-accent via-accent-dark to-transparent" />
+
+            <div>
+              <span className="text-[10px] text-accent font-mono uppercase tracking-[0.3em] font-bold block mb-2">
+                ARENA SPECIFICATION
+              </span>
+
+              <h3 className="font-heading text-3xl sm:text-4xl text-white uppercase tracking-wider mb-2">
+                {facilities[selectedIdx].name}
+              </h3>
+              
+              <div className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg text-xs text-accent font-semibold mb-4 inline-block">
+                {facilities[selectedIdx].specs}
               </div>
-            )}
+
+              <p className="font-body text-sm sm:text-base text-gray-300 leading-relaxed mb-6">
+                {facilities[selectedIdx].description}
+              </p>
+            </div>
+
+            <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-[9px] text-gray-500 uppercase tracking-widest block">
+                  ACCESS INCLUSION
+                </span>
+                <span className="font-heading text-lg text-white uppercase tracking-widest">
+                  Included In All Plans
+                </span>
+              </div>
+
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 bg-accent text-black font-heading text-sm uppercase tracking-wider px-5 py-2.5 rounded-full font-bold hover:bg-white transition-all shadow-[0_0_15px_rgba(255,209,0,0.3)]"
+              >
+                <span>Book Free Trial</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </div>

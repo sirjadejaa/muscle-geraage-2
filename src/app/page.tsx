@@ -18,6 +18,7 @@ import Blog from '@/components/Blog';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import WhatsApp from '@/components/WhatsApp';
+import StickyMobileCTA from '@/components/StickyMobileCTA';
 
 export default function Home() {
   return (
@@ -28,28 +29,33 @@ export default function Home() {
       {/* Sticky blurred glass navbar */}
       <Navbar />
 
-      {/* 16 Sequential Page Sections */}
-      <Hero />
-      <BrandStory />
-      <About />
-      <WhyChooseUs />
-      <Facilities />
-      <Programs />
-      <Membership />
-      <Trainers />
-      <Transformations />
-      <VirtualTour />
-      <Gallery />
-      <Testimonials />
-      <FAQ />
-      <Blog />
-      <Contact />
+      {/* Main Page Sections */}
+      <main className="relative bg-black w-full overflow-x-clip">
+        <Hero />
+        <BrandStory />
+        <About />
+        <WhyChooseUs />
+        <Facilities />
+        <Programs />
+        <Membership />
+        <Trainers />
+        <Transformations />
+        <VirtualTour />
+        <Gallery />
+        <Testimonials />
+        <FAQ />
+        <Blog />
+        <Contact />
+      </main>
       
-      {/* Footer */}
+      {/* Luxury Footer */}
       <Footer />
 
-      {/* Floating CTA WhatsApp */}
+      {/* Floating CTA WhatsApp (Desktop) */}
       <WhatsApp />
+
+      {/* Sticky Mobile Conversion Bar (Mobile) */}
+      <StickyMobileCTA />
     </SmoothScroll>
   );
 }

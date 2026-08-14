@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { Award, Zap, Heart, Shield, Sparkles } from 'lucide-react';
+import { Award, Zap, Heart, ShieldCheck, Sparkles, Droplets, CheckCircle2 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -14,32 +14,47 @@ const features = [
   {
     icon: Zap,
     title: 'Biomechanical Weaponry',
-    description: 'Equipped with custom-calibrated Panatta (Italy) and Technogym biomechanics to isolate muscle fibers with zero joint stress.',
-    gridClass: 'md:col-span-2 lg:col-span-3',
+    subtitle: 'Panatta & Technogym Calibrated Lines',
+    description:
+      'Custom-calibrated Panatta (Italy) and Technogym biomechanics designed to isolate target muscle fibers with pinpoint accuracy and zero joint stress.',
+    stats: '80+ Specialized Machines',
+    gridClass: 'lg:col-span-4',
   },
   {
     icon: Award,
-    title: 'Certified Elite Trainers',
-    description: 'Transform with coaches certified by Gold\'s Gym Academy, K11, and ACSM, offering personalized bio-programming.',
-    gridClass: 'md:col-span-2 lg:col-span-3',
+    title: 'Certified Master Coaches',
+    subtitle: 'ACSM, K11 & Gold\'s Academy Panel',
+    description:
+      'Every trainer is fully certified and experienced in biomechanical hypertrophy, injury prevention, and customized transformation programming.',
+    stats: '15+ Certified Trainers',
+    gridClass: 'lg:col-span-4',
   },
   {
-    icon: Heart,
+    icon: Droplets,
     title: 'Luxury Recovery Suite',
-    description: 'Accelerate muscle repair in our custom ice baths, Finnish saunas, steam cabins, and dedicated sports massage recovery rooms.',
-    gridClass: 'md:col-span-2 lg:col-span-2',
+    subtitle: 'Cryo Ice Baths, Finnish Sauna & Steam',
+    description:
+      'Accelerate systemic recovery and reduce inflammation with dedicated 4°C cold plunge baths, Finnish dry saunas, and eucalyptus steam rooms.',
+    stats: 'Full Recovery Wing',
+    gridClass: 'lg:col-span-4',
   },
   {
-    icon: Shield,
+    icon: ShieldCheck,
     title: 'Absolute Hygiene Standards',
-    description: 'Continuous HEPA air filtration and premium sanitization protocols maintain a fresh, clean, and safe space 24/7.',
-    gridClass: 'md:col-span-2 lg:col-span-2',
+    subtitle: 'Medical-Grade HEPA Air Filtration',
+    description:
+      'Continuous medical-grade air purification, automated sanitization cycles, pristine rainforest showers, and immaculate locker rooms 24/7.',
+    stats: '99.9% HEPA Purity',
+    gridClass: 'lg:col-span-6',
   },
   {
     icon: Sparkles,
-    title: 'VVIP Amenities',
-    description: 'Premium towels, locker security, private shower suites, nutrition consulting bar, and valet parking.',
-    gridClass: 'md:col-span-2 lg:col-span-2',
+    title: 'VVIP Hospitality & Amenities',
+    subtitle: 'Complimentary Valet & Concierge Bar',
+    description:
+      'Enjoy seamless valet parking, private digital keypad lockers, plush towels, organic grooming amenities, and an in-house protein shake bar.',
+    stats: 'Full Concierge Service',
+    gridClass: 'lg:col-span-6',
   },
 ];
 
@@ -49,16 +64,15 @@ export default function WhyChooseUs() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    // Staggered reveal of features
     gsap.from('.feature-card', {
       opacity: 0,
       y: 40,
       duration: 0.8,
-      stagger: 0.15,
-      ease: 'power2.out',
+      stagger: 0.12,
+      ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 80%',
+        start: 'top 75%',
       },
     });
   }, { scope: containerRef });
@@ -67,64 +81,70 @@ export default function WhyChooseUs() {
     <section
       ref={containerRef}
       id="why-choose-us"
-      className="relative bg-secondary py-24 md:py-32 px-6 border-t border-white/5 z-30 overflow-hidden"
+      className="relative bg-neutral-950 py-20 sm:py-28 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-white/5 z-30 overflow-hidden"
     >
-      {/* Premium Texture Overlay */}
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518063319789-7217e6706b04?q=80&w=1920')] bg-cover bg-center opacity-8 mix-blend-luminosity pointer-events-none" />
-      
-      {/* Golden Luxury Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,209,0,0.06)_0%,transparent_70%)] pointer-events-none" />
-      
-      {/* Giant Typographic Watermark to fill empty space */}
-      <div className="absolute bottom-6 right-0 font-heading text-[15vw] tracking-[0.1em] text-white/[0.015] uppercase select-none pointer-events-none leading-none z-0">
-        LIMITLESS
-      </div>
+      {/* Background Texture & Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,209,0,0.06)_0%,transparent_60%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="mb-16 md:mb-20 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mb-14 sm:mb-20 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-4 block">
+            <span className="text-accent text-xs font-semibold tracking-[0.5em] uppercase mb-3 block">
               THE GOLD STANDARD
             </span>
-            <h2 className="font-heading text-5xl sm:text-7xl tracking-tight text-white uppercase leading-none">
+            <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-none">
               WHY THE ELITE <br />
-              <span className="text-accent">CHOOSE US</span>
+              <span className="gold-gradient-text">CHOOSE US</span>
             </h2>
           </div>
-          <p className="font-body text-sm md:text-base text-gray-400 max-w-sm leading-relaxed">
-            Muscle Garaage delivers a bespoke lifestyle experience designed to optimize performance, comfort, and results.
+          <p className="font-body text-sm sm:text-base text-gray-400 max-w-md leading-relaxed">
+            Muscle Garaage delivers a bespoke fitness lifestyle engineered for unmatched performance, executive comfort, and proven results.
           </p>
         </div>
 
-        {/* Asymmetrical Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
+        {/* Feature Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-8">
           {features.map((feat, index) => {
             const Icon = feat.icon;
             return (
               <div
                 key={index}
-                className={`feature-card group relative p-8 md:p-10 bg-black border border-white/5 hover:border-accent/40 transition-all duration-500 flex flex-col justify-between hover:translate-y-[-4px] ${feat.gridClass}`}
+                className={`feature-card group relative p-6 sm:p-8 md:p-10 rounded-2xl bg-black border border-white/10 hover:border-accent/50 transition-all duration-500 flex flex-col justify-between hover:-translate-y-1 shadow-lg ${feat.gridClass}`}
               >
-                {/* Glow Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/0 via-accent/0 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                {/* Gold corner accent */}
+                <div className="absolute top-0 left-0 w-8 h-[2px] bg-accent group-hover:w-full transition-all duration-700 rounded-t-2xl" />
 
                 <div>
-                  {/* Icon */}
-                  <div className="w-12 h-12 bg-secondary flex items-center justify-center border border-white/10 group-hover:border-accent group-hover:bg-accent group-hover:text-black text-accent transition-all duration-500 mb-8 rounded-none">
-                    <Icon className="w-5 h-5" />
+                  {/* Icon & Stats Badge */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-neutral-900 border border-white/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-all duration-300">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-accent/80 bg-accent/5 border border-accent/20 px-3 py-1 rounded-full">
+                      {feat.stats}
+                    </span>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="font-heading text-2xl uppercase tracking-wider text-white mb-4 group-hover:text-accent transition-colors duration-300">
+                  {/* Title & Subtitle */}
+                  <h3 className="font-heading text-2xl sm:text-3xl uppercase tracking-wider text-white mb-1 group-hover:text-accent transition-colors duration-300">
                     {feat.title}
                   </h3>
+                  <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold block mb-4">
+                    {feat.subtitle}
+                  </span>
+
+                  {/* Description */}
+                  <p className="font-body text-sm text-gray-300 leading-relaxed">
+                    {feat.description}
+                  </p>
                 </div>
 
-                {/* Description */}
-                <p className="font-body text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-                  {feat.description}
-                </p>
+                {/* Card Footer */}
+                <div className="mt-8 pt-4 border-t border-white/5 flex items-center gap-2 text-[11px] text-gray-400 uppercase tracking-wider">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
+                  <span>Standard In All Memberships</span>
+                </div>
               </div>
             );
           })}
